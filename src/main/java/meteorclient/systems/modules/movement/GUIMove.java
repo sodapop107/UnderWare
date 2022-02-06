@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.movement;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.meteor.KeyEvent;
 import meteorclient.events.world.TickEvent;
 import meteorclient.gui.WidgetScreen;
@@ -137,7 +137,7 @@ public class GUIMove extends Module {
 
         InputUtil.Key key = ((KeyBindingAccessor) bind).getKey();
         if (wasPressed != pressed && key.getCategory() == InputUtil.Type.KEYSYM) {
-            MeteorClient.EVENT_BUS.post(KeyEvent.get(key.getCode(), 0, pressed ? KeyAction.Press : KeyAction.Release));
+            UnderWare.EVENT_BUS.post(KeyEvent.get(key.getCode(), 0, pressed ? KeyAction.Press : KeyAction.Release));
         }
     }
 

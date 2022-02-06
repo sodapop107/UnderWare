@@ -14,7 +14,7 @@ import meteorclient.utils.misc.NbtUtils;
 import meteorclient.utils.network.MeteorExecutor;
 import org.jetbrains.annotations.Nullable;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class AccountsScreen extends WindowScreen {
     public AccountsScreen(GuiTheme theme) {

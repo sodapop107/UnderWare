@@ -21,7 +21,7 @@ import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import net.minecraft.client.gui.screen.Screen;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class MacrosTab extends Tab {
     public MacrosTab() {

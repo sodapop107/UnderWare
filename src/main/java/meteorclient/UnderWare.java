@@ -42,14 +42,14 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MeteorClient implements ClientModInitializer {
+public class UnderWare implements ClientModInitializer {
     public static final String MOD_ID = "meteor-client";
     private static final ModMetadata MOD_META = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata();
     public final static Version VERSION;
     public final static String DEV_BUILD;
 
     public static MinecraftClient mc;
-    public static MeteorClient INSTANCE;
+    public static UnderWare INSTANCE;
     public static final IEventBus EVENT_BUS = new EventBus();
     public static final File FOLDER = new File(FabricLoader.getInstance().getGameDir().toString(), MOD_ID);
     public static final Logger LOG = LogManager.getLogger();

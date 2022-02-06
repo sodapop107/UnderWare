@@ -10,7 +10,7 @@ import meteorclient.utils.Utils;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.lang3.SystemUtils;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static org.lwjgl.glfw.GLFW.*;
 
 public abstract class WTextBox extends WWidget {

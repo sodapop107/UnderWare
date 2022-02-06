@@ -5,7 +5,7 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.mixin.MinecraftClientAccessor;
 import meteorclient.systems.accounts.Account;
 import meteorclient.systems.accounts.AccountType;
@@ -15,7 +15,7 @@ import net.minecraft.nbt.NbtCompound;
 
 import java.util.Optional;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class PremiumAccount extends Account<PremiumAccount> {
     private String password;
@@ -54,12 +54,12 @@ public class PremiumAccount extends Account<PremiumAccount> {
             cache.username = auth.getSelectedProfile().getName();
             return true;
         } catch (AuthenticationUnavailableException e) {
-            MeteorClient.LOG.error("Failed to contact the authentication server.");
+            UnderWare.LOG.error("Failed to contact the authentication server.");
             return false;
         } catch (AuthenticationException e) {
             if (e.getMessage().contains("Invalid username or password") || e.getMessage().contains("account migrated"))
-                MeteorClient.LOG.error("Wrong password.");
-            else MeteorClient.LOG.error("Failed to contact the authentication server.");
+                UnderWare.LOG.error("Wrong password.");
+            else UnderWare.LOG.error("Failed to contact the authentication server.");
             return false;
         }
     }

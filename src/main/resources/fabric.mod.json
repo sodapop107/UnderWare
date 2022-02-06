@@ -20,7 +20,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "meteorclient.MeteorClient"
+      "meteorclient.UnderWare"
     ]
   },
   "mixins": [

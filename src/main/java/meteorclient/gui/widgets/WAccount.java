@@ -9,7 +9,7 @@ import meteorclient.systems.accounts.Accounts;
 import meteorclient.utils.network.MeteorExecutor;
 import meteorclient.utils.render.color.Color;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public abstract class WAccount extends WHorizontalList {
     public Runnable refreshScreenAction;

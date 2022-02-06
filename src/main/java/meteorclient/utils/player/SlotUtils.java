@@ -12,7 +12,7 @@ import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.screen.*;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class SlotUtils {
     public static final int HOTBAR_START = 0;

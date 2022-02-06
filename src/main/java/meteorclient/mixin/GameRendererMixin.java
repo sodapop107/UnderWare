@@ -1,7 +1,7 @@
 package meteorclient.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.render.Render3DEvent;
 import meteorclient.events.render.RenderAfterWorldEvent;
 import meteorclient.mixininterface.IVec3d;
@@ -58,7 +58,7 @@ public abstract class GameRendererMixin {
         NametagUtils.onRender(matrices, matrix4f);
 
         renderer.begin();
-        MeteorClient.EVENT_BUS.post(event);
+        UnderWare.EVENT_BUS.post(event);
         renderer.render(matrices);
 
         RenderSystem.applyModelViewMatrix();
@@ -67,7 +67,7 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "renderWorld", at = @At("TAIL"))
     private void onRenderWorldTail(CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(RenderAfterWorldEvent.get());
+        UnderWare.EVENT_BUS.post(RenderAfterWorldEvent.get());
     }
 
     @Inject(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileUtil;raycast(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;D)Lnet/minecraft/util/hit/EntityHitResult;"), cancellable = true)

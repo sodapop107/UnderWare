@@ -1,6 +1,6 @@
 package meteorclient.utils.misc;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.ResourcePacksReloadedEvent;
 import meteorclient.utils.Init;
 import meteorclient.utils.InitStage;
@@ -22,7 +22,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class Names {
     private static final Map<StatusEffect, String> statusEffectNames = new HashMap<>(16);
@@ -35,7 +35,7 @@ public class Names {
 
     @Init(stage = InitStage.Pre)
     public static void init() {
-        MeteorClient.EVENT_BUS.subscribe(Names.class);
+        UnderWare.EVENT_BUS.subscribe(Names.class);
     }
 
     @EventHandler

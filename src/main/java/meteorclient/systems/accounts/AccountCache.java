@@ -1,7 +1,7 @@
 package meteorclient.systems.accounts;
 
 import com.mojang.blaze3d.platform.TextureUtil;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.renderer.Texture;
 import meteorclient.utils.misc.ISerializable;
 import meteorclient.utils.misc.NbtException;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class AccountCache implements ISerializable<AccountCache> {
     private static Texture STEVE_HEAD;
@@ -71,7 +71,7 @@ public class AccountCache implements ISerializable<AccountCache> {
             headTexture = new Texture(8, 8, head, Texture.Format.RGB, Texture.Filter.Nearest, Texture.Filter.Nearest);
             return true;
         } catch (IOException e) {
-            MeteorClient.LOG.error("Failed to read skin url (" + url + ").");
+            UnderWare.LOG.error("Failed to read skin url (" + url + ").");
             return false;
         }
     }
@@ -98,7 +98,7 @@ public class AccountCache implements ISerializable<AccountCache> {
 
     public static void loadSteveHead() {
         try {
-            ByteBuffer data = TextureUtil.readResource(mc.getResourceManager().getResource(new Identifier(MeteorClient.MOD_ID, "textures/steve.png")).getInputStream());
+            ByteBuffer data = TextureUtil.readResource(mc.getResourceManager().getResource(new Identifier(UnderWare.MOD_ID, "textures/steve.png")).getInputStream());
             data.rewind();
 
             try (MemoryStack stack = MemoryStack.stackPush()) {

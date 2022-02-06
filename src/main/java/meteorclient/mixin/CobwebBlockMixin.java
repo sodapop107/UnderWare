@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.player.CobwebEntityCollisionEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CobwebBlock;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CobwebBlockMixin {
     @Inject(method = "onEntityCollision", at = @At("HEAD"), cancellable = true)
     private void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, CallbackInfo info) {
-        CobwebEntityCollisionEvent event = MeteorClient.EVENT_BUS.post(CobwebEntityCollisionEvent.get(state, pos));
+        CobwebEntityCollisionEvent event = UnderWare.EVENT_BUS.post(CobwebEntityCollisionEvent.get(state, pos));
 
         if (event.isCancelled()) info.cancel();
     }

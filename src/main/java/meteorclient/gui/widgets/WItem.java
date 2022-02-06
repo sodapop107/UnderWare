@@ -5,7 +5,7 @@ import meteorclient.gui.renderer.GuiRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class WItem extends WWidget {
     protected ItemStack itemStack;

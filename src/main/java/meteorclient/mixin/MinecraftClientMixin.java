@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.player.ItemUseCrosshairTargetEvent;
 import meteorclient.events.game.GameLeftEvent;
 import meteorclient.events.game.OpenScreenEvent;
@@ -61,7 +61,7 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onInit(CallbackInfo info) {
-        MeteorClient.INSTANCE.onInitializeClient();
+        UnderWare.INSTANCE.onInitializeClient();
         firstFrame = true;
     }
 
@@ -71,7 +71,7 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
         doItemUseCalled = false;
 
         getProfiler().push("meteor-client_pre_update");
-        MeteorClient.EVENT_BUS.post(TickEvent.Pre.get());
+        UnderWare.EVENT_BUS.post(TickEvent.Pre.get());
         getProfiler().pop();
 
         if (rightClick && !doItemUseCalled && interactionManager != null) doItemUse();
@@ -81,7 +81,7 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
     @Inject(at = @At("TAIL"), method = "tick")
     private void onTick(CallbackInfo info) {
         getProfiler().push("meteor-client_post_update");
-        MeteorClient.EVENT_BUS.post(TickEvent.Post.get());
+        UnderWare.EVENT_BUS.post(TickEvent.Post.get());
         getProfiler().pop();
     }
 
@@ -93,7 +93,7 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
     @Inject(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At("HEAD"))
     private void onDisconnect(Screen screen, CallbackInfo info) {
         if (world != null) {
-            MeteorClient.EVENT_BUS.post(GameLeftEvent.get());
+            UnderWare.EVENT_BUS.post(GameLeftEvent.get());
         }
     }
 
@@ -102,19 +102,19 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
         if (screen instanceof WidgetScreen) screen.mouseMoved(mouse.getX() * window.getScaleFactor(), mouse.getY() * window.getScaleFactor());
 
         OpenScreenEvent event = OpenScreenEvent.get(screen);
-        MeteorClient.EVENT_BUS.post(event);
+        UnderWare.EVENT_BUS.post(event);
 
         if (event.isCancelled()) info.cancel();
     }
 
     @Redirect(method = "doItemUse", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;crosshairTarget:Lnet/minecraft/util/hit/HitResult;", ordinal = 1))
     private HitResult doItemUseMinecraftClientCrosshairTargetProxy(MinecraftClient client) {
-        return MeteorClient.EVENT_BUS.post(ItemUseCrosshairTargetEvent.get(client.crosshairTarget)).target;
+        return UnderWare.EVENT_BUS.post(ItemUseCrosshairTargetEvent.get(client.crosshairTarget)).target;
     }
 
     @ModifyVariable(method = "reloadResources(Z)Ljava/util/concurrent/CompletableFuture;", at = @At("STORE"), ordinal = 0)
     private CompletableFuture<Void> onReloadResourcesNewCompletableFuture(CompletableFuture<Void> completableFuture) {
-        completableFuture.thenRun(() -> MeteorClient.EVENT_BUS.post(ResourcePacksReloadedEvent.get()));
+        completableFuture.thenRun(() -> UnderWare.EVENT_BUS.post(ResourcePacksReloadedEvent.get()));
 
         return completableFuture;
     }
@@ -144,7 +144,7 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
 
     @Inject(method = "onResolutionChanged", at = @At("TAIL"))
     private void onResolutionChanged(CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(WindowResizedEvent.get());
+        UnderWare.EVENT_BUS.post(WindowResizedEvent.get());
     }
 
     @Inject(method = "getFramerateLimit", at = @At("HEAD"), cancellable = true)

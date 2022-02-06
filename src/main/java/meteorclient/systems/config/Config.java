@@ -1,6 +1,6 @@
 package meteorclient.systems.config;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.renderer.Fonts;
 import meteorclient.settings.*;
 import meteorclient.systems.System;
@@ -13,7 +13,7 @@ import net.minecraft.nbt.NbtString;
 import java.util.ArrayList;
 import java.util.List;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class Config extends System<Config> {
     public final Settings settings = new Settings();
@@ -33,7 +33,7 @@ public class Config extends System<Config> {
 
     public final Setting<String> font = sgVisual.add(new ProvidedStringSetting.Builder()
         .name("font")
-        .description("Custom font to use (picked from .minecraft/" + MeteorClient.MOD_ID + "/fonts folder).")
+        .description("Custom font to use (picked from .minecraft/" + UnderWare.MOD_ID + "/fonts folder).")
         .visible(customFont::get)
         .supplier(Fonts::getAvailableFonts)
         .defaultValue(Fonts.DEFAULT_FONT)
@@ -136,7 +136,7 @@ public class Config extends System<Config> {
     public NbtCompound toTag() {
         NbtCompound tag = new NbtCompound();
 
-        tag.putString("version", MeteorClient.VERSION.toString());
+        tag.putString("version", UnderWare.VERSION.toString());
         tag.put("settings", settings.toTag());
         tag.put("dontShowAgainPrompts", listToTag(dontShowAgainPrompts));
 

@@ -1,7 +1,7 @@
 package meteorclient.systems.modules.misc;
 
 import io.netty.buffer.Unpooled;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.packets.PacketEvent;
 import meteorclient.mixin.CustomPayloadC2SPacketAccessor;
 import meteorclient.systems.modules.Categories;
@@ -18,7 +18,7 @@ public class VanillaSpoof extends Module {
     public VanillaSpoof() {
         super(Categories.Misc, "vanilla-spoof", "When connecting to a server it spoofs the client name to be 'vanilla'.");
 
-        MeteorClient.EVENT_BUS.subscribe(new Listener());
+        UnderWare.EVENT_BUS.subscribe(new Listener());
     }
 
     private class Listener {

@@ -14,7 +14,7 @@ import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class PeekScreen extends ShulkerBoxScreen {
     private final Identifier TEXTURE = new Identifier("textures/gui/container/shulker_box.png");

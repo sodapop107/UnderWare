@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class FakePlayerEntity extends OtherClientPlayerEntity {
     public FakePlayerEntity(PlayerEntity player, String name, float health, boolean copyInv) {

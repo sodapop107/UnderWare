@@ -2,7 +2,7 @@ package meteorclient.utils.misc;
 
 import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.Goal;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.mixin.MinecraftClientAccessor;
 import meteorclient.systems.modules.Module;
 import meteorclient.systems.modules.Modules;
@@ -31,7 +31,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class MeteorStarscript {
     public static Starscript ss = new Starscript();
@@ -41,7 +41,7 @@ public class MeteorStarscript {
         StandardLib.init(ss);
 
         // General
-        ss.set("version", Value.string(MeteorClient.VERSION != null ? (MeteorClient.DEV_BUILD.isEmpty() ? MeteorClient.VERSION.toString() : MeteorClient.VERSION + " " + MeteorClient.DEV_BUILD) : ""));
+        ss.set("version", Value.string(UnderWare.VERSION != null ? (UnderWare.DEV_BUILD.isEmpty() ? UnderWare.VERSION.toString() : UnderWare.VERSION + " " + UnderWare.DEV_BUILD) : ""));
         ss.set("mc_version", Value.string(SharedConstants.getGameVersion().getName()));
         ss.set("fps", () -> Value.number(MinecraftClientAccessor.getFps()));
 

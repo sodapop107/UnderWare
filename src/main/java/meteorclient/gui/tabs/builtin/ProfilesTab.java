@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class ProfilesTab extends Tab {
 

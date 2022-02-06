@@ -3,7 +3,7 @@ package meteorclient.gui.tabs;
 import meteorclient.gui.GuiTheme;
 import net.minecraft.client.gui.screen.Screen;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public abstract class Tab {
     public final String name;

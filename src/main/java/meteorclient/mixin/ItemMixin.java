@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.render.TooltipDataEvent;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.item.*;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ItemMixin {
     @Inject(method = "getTooltipData", at=@At("HEAD"), cancellable = true)
     private void onTooltipData(ItemStack stack, CallbackInfoReturnable<Optional<TooltipData>> cir) {
-        TooltipDataEvent event = MeteorClient.EVENT_BUS.post(TooltipDataEvent.get(stack));
+        TooltipDataEvent event = UnderWare.EVENT_BUS.post(TooltipDataEvent.get(stack));
         if (event.tooltipData != null) {
             cir.setReturnValue(Optional.of(event.tooltipData));
         }

@@ -1,7 +1,7 @@
 package meteorclient.systems.commands.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.meteor.KeyEvent;
 import meteorclient.systems.commands.Command;
 import meteorclient.systems.commands.arguments.PlayerArgumentType;
@@ -29,7 +29,7 @@ public class SpectateCommand extends Command {
         builder.then(argument("player", PlayerArgumentType.player()).executes(context -> {
             mc.setCameraEntity(PlayerArgumentType.getPlayer(context));
             mc.player.sendMessage(new LiteralText("Sneak to un-spectate."), true);
-            MeteorClient.EVENT_BUS.subscribe(shiftListener);
+            UnderWare.EVENT_BUS.subscribe(shiftListener);
             return SINGLE_SUCCESS;
         }));
     }
@@ -40,7 +40,7 @@ public class SpectateCommand extends Command {
             if (mc.options.keySneak.matchesKey(event.key, 0) || mc.options.keySneak.matchesMouse(event.key)) {
                 mc.setCameraEntity(mc.player);
                 event.cancel();
-                MeteorClient.EVENT_BUS.unsubscribe(this);
+                UnderWare.EVENT_BUS.unsubscribe(this);
             }
         }
     }

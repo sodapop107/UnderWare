@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.systems.modules.Category;
 import meteorclient.systems.modules.Module;
 import meteorclient.systems.modules.Modules;
@@ -19,10 +19,10 @@ public class CrashReportMixin {
         if (Modules.get() != null) {
             sb.append("\n\n");
             sb.append("-- UnderWare --\n");
-            sb.append("Version: ").append(MeteorClient.VERSION).append("\n");
+            sb.append("Version: ").append(UnderWare.VERSION).append("\n");
 
-            if (!MeteorClient.DEV_BUILD.isEmpty()) {
-                sb.append("Dev Build: ").append(MeteorClient.DEV_BUILD).append("\n");
+            if (!UnderWare.DEV_BUILD.isEmpty()) {
+                sb.append("Dev Build: ").append(UnderWare.DEV_BUILD).append("\n");
             }
 
             for (Category category : Modules.loopCategories()) {

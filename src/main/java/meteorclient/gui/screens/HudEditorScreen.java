@@ -17,7 +17,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.List;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class HudEditorScreen extends WidgetScreen {
     private final Color HOVER_BG_COLOR = new Color(200, 200, 200, 50);

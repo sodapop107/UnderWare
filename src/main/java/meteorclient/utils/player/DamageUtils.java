@@ -1,6 +1,6 @@
 package meteorclient.utils.player;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.GameJoinedEvent;
 import meteorclient.mixininterface.IExplosion;
 import meteorclient.mixininterface.IRaycastContext;
@@ -34,7 +34,7 @@ import net.minecraft.world.explosion.Explosion;
 
 import java.util.Objects;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class DamageUtils {
     private static final Vec3d vec3d = new Vec3d(0, 0, 0);
@@ -43,7 +43,7 @@ public class DamageUtils {
 
     @Init(stage = InitStage.Pre)
     public static void init() {
-        MeteorClient.EVENT_BUS.subscribe(DamageUtils.class);
+        UnderWare.EVENT_BUS.subscribe(DamageUtils.class);
     }
 
     @EventHandler

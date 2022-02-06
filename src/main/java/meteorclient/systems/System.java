@@ -1,6 +1,6 @@
 package meteorclient.systems;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.utils.files.StreamUtils;
 import meteorclient.utils.misc.ISerializable;
 import net.minecraft.nbt.NbtCompound;
@@ -17,7 +17,7 @@ public abstract class System<T> implements ISerializable<T> {
         this.name = name;
 
         if (name != null) {
-            this.file = new File(MeteorClient.FOLDER, name + ".nbt");
+            this.file = new File(UnderWare.FOLDER, name + ".nbt");
         }
     }
 
@@ -31,7 +31,7 @@ public abstract class System<T> implements ISerializable<T> {
         if (tag == null) return;
 
         try {
-            File tempFile = File.createTempFile(MeteorClient.MOD_ID, file.getName());
+            File tempFile = File.createTempFile(UnderWare.MOD_ID, file.getName());
             NbtIo.write(tag, tempFile);
 
             if (folder != null) file = new File(folder, file.getName());

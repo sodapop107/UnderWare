@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.meteor.MouseButtonEvent;
 import meteorclient.events.meteor.MouseScrollEvent;
 import meteorclient.mixininterface.ICamera;
@@ -32,12 +32,12 @@ public class MouseMixin {
     private void onMouseButton(long window, int button, int action, int mods, CallbackInfo info) {
         Input.setButtonState(button, action != GLFW_RELEASE);
 
-        if (MeteorClient.EVENT_BUS.post(MouseButtonEvent.get(button, KeyAction.get(action))).isCancelled()) info.cancel();
+        if (UnderWare.EVENT_BUS.post(MouseButtonEvent.get(button, KeyAction.get(action))).isCancelled()) info.cancel();
     }
 
     @Inject(method = "onMouseScroll", at = @At("HEAD"), cancellable = true)
     private void onMouseScroll(long window, double horizontal, double vertical, CallbackInfo info) {
-        if (MeteorClient.EVENT_BUS.post(MouseScrollEvent.get(vertical)).isCancelled()) info.cancel();
+        if (UnderWare.EVENT_BUS.post(MouseScrollEvent.get(vertical)).isCancelled()) info.cancel();
     }
 
     @Redirect(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"))

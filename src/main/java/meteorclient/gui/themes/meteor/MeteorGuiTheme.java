@@ -26,7 +26,7 @@ import meteorclient.systems.modules.Module;
 import meteorclient.utils.render.color.Color;
 import meteorclient.utils.render.color.SettingColor;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class MeteorGuiTheme extends GuiTheme {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();

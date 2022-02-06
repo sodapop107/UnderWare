@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.ChangePerspectiveEvent;
 import meteorclient.systems.modules.Modules;
 import meteorclient.systems.modules.render.Freecam;
@@ -31,7 +31,7 @@ public class GameOptionsMixin {
 
     @Inject(method = "setPerspective", at = @At("HEAD"), cancellable = true)
     private void setPerspective(Perspective perspective, CallbackInfo info) {
-        ChangePerspectiveEvent event = MeteorClient.EVENT_BUS.post(ChangePerspectiveEvent.get(perspective));
+        ChangePerspectiveEvent event = UnderWare.EVENT_BUS.post(ChangePerspectiveEvent.get(perspective));
 
         if (event.isCancelled()) info.cancel();
 

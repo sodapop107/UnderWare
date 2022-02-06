@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.BoatMoveEvent;
 import meteorclient.systems.modules.Modules;
 import meteorclient.systems.modules.movement.BoatFly;
@@ -20,7 +20,7 @@ public class BoatEntityMixin {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/vehicle/BoatEntity;move(Lnet/minecraft/entity/MovementType;Lnet/minecraft/util/math/Vec3d;)V"))
     private void onTickInvokeMove(CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(BoatMoveEvent.get((BoatEntity) (Object) this));
+        UnderWare.EVENT_BUS.post(BoatMoveEvent.get((BoatEntity) (Object) this));
     }
 
     @Redirect(method = "updatePaddles", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/vehicle/BoatEntity;pressingLeft:Z"))

@@ -3,7 +3,7 @@ package meteorclient.renderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
 import org.apache.commons.io.IOUtils;
@@ -11,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static org.lwjgl.opengl.GL32C.*;
 
 public class Shader {
@@ -26,7 +26,7 @@ public class Shader {
 
         String vertError = GL.compileShader(vert);
         if (vertError != null) {
-            MeteorClient.LOG.error("Failed to compile vertex shader (" + vertPath + "): " + vertError);
+            UnderWare.LOG.error("Failed to compile vertex shader (" + vertPath + "): " + vertError);
             throw new RuntimeException("Failed to compile vertex shader (" + vertPath + "): " + vertError);
         }
 
@@ -35,7 +35,7 @@ public class Shader {
 
         String fragError = GL.compileShader(frag);
         if (fragError != null) {
-            MeteorClient.LOG.error("Failed to compile fragment shader (" + fragPath + "): " + fragError);
+            UnderWare.LOG.error("Failed to compile fragment shader (" + fragPath + "): " + fragError);
             throw new RuntimeException("Failed to compile fragment shader (" + fragPath + "): " + fragError);
         }
 
@@ -43,7 +43,7 @@ public class Shader {
 
         String programError = GL.linkProgram(id, vert, frag);
         if (programError != null) {
-            MeteorClient.LOG.error("Failed to link program: " + programError);
+            UnderWare.LOG.error("Failed to link program: " + programError);
             throw new RuntimeException("Failed to link program: " + programError);
         }
 
@@ -53,7 +53,7 @@ public class Shader {
 
     private String read(String path) {
         try {
-            return IOUtils.toString(mc.getResourceManager().getResource(new Identifier(MeteorClient.MOD_ID, "shaders/" + path)).getInputStream(), StandardCharsets.UTF_8);
+            return IOUtils.toString(mc.getResourceManager().getResource(new Identifier(UnderWare.MOD_ID, "shaders/" + path)).getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return "";

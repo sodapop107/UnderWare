@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.misc;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.TickEvent;
 import meteorclient.settings.BoolSetting;
 import meteorclient.settings.IntSetting;
@@ -144,9 +144,9 @@ public class AutoLog extends Module {
     private final StaticListener staticListener = new StaticListener();
 
     private void enableHealthListener(){
-        MeteorClient.EVENT_BUS.subscribe(staticListener);
+        UnderWare.EVENT_BUS.subscribe(staticListener);
     }
     private void disableHealthListener(){
-        MeteorClient.EVENT_BUS.unsubscribe(staticListener);
+        UnderWare.EVENT_BUS.unsubscribe(staticListener);
     }
 }

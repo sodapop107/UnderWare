@@ -5,7 +5,7 @@ import baritone.api.pathing.goals.GoalXZ;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.ChunkDataEvent;
 import meteorclient.gui.GuiTheme;
 import meteorclient.gui.WindowScreen;
@@ -256,11 +256,11 @@ public class StashFinder extends Module {
     }
 
     private File getJsonFile() {
-        return new File(new File(new File(MeteorClient.FOLDER, "stashes"), Utils.getWorldName()), "stashes.json");
+        return new File(new File(new File(UnderWare.FOLDER, "stashes"), Utils.getWorldName()), "stashes.json");
     }
 
     private File getCsvFile() {
-        return new File(new File(new File(MeteorClient.FOLDER, "stashes"), Utils.getWorldName()), "stashes.csv");
+        return new File(new File(new File(UnderWare.FOLDER, "stashes"), Utils.getWorldName()), "stashes.csv");
     }
 
     public enum Mode {

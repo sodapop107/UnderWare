@@ -1,7 +1,7 @@
 package meteorclient.settings;
 
 import com.mojang.serialization.Lifecycle;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -98,7 +98,7 @@ public class StorageBlockListSetting extends Setting<List<BlockEntityType<?>>> {
 
     private static class SRegistry extends Registry<BlockEntityType<?>> {
         public SRegistry() {
-            super(RegistryKey.ofRegistry(new Identifier(MeteorClient.MOD_ID, "storage-blocks")), Lifecycle.stable());
+            super(RegistryKey.ofRegistry(new Identifier(UnderWare.MOD_ID, "storage-blocks")), Lifecycle.stable());
         }
 
         @Override

@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.DropItemsEvent;
 import meteorclient.events.entity.player.ClipAtLedgeEvent;
 import meteorclient.systems.modules.Modules;
@@ -16,13 +16,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
     @Inject(method = "clipAtLedge", at = @At("HEAD"), cancellable = true)
     protected void clipAtLedge(CallbackInfoReturnable<Boolean> info) {
-        ClipAtLedgeEvent event = MeteorClient.EVENT_BUS.post(ClipAtLedgeEvent.get());
+        ClipAtLedgeEvent event = UnderWare.EVENT_BUS.post(ClipAtLedgeEvent.get());
 
         if (event.isSet()) info.setReturnValue(event.isClip());
     }
@@ -30,7 +30,7 @@ public class PlayerEntityMixin {
     @Inject(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At("HEAD"), cancellable = true)
     private void onDropItem(ItemStack stack, boolean bl, boolean bl2, CallbackInfoReturnable<ItemEntity> info) {
         if (mc.world.isClient) {
-            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(stack)).isCancelled()) info.cancel();
+            if (UnderWare.EVENT_BUS.post(DropItemsEvent.get(stack)).isCancelled()) info.cancel();
         }
     }
 

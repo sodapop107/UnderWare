@@ -1,6 +1,6 @@
 package meteorclient.utils.world;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.GameJoinedEvent;
 import meteorclient.events.packets.PacketEvent;
 import meteorclient.utils.Utils;
@@ -21,7 +21,7 @@ public class TickRate {
     private long timeGameJoined;
 
     private TickRate() {
-        MeteorClient.EVENT_BUS.subscribe(this);
+        UnderWare.EVENT_BUS.subscribe(this);
     }
 
     @EventHandler

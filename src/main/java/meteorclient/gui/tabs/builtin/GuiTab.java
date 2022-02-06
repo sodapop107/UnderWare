@@ -11,7 +11,7 @@ import meteorclient.utils.misc.NbtUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.nbt.NbtCompound;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class GuiTab extends Tab {
     public GuiTab() {

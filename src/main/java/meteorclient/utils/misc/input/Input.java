@@ -5,7 +5,7 @@ import meteorclient.utils.misc.CursorStyle;
 import net.minecraft.client.option.KeyBinding;
 import org.lwjgl.glfw.GLFW;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class Input {
     private static final boolean[] keys = new boolean[512];

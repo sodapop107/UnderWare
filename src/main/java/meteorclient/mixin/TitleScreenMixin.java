@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.systems.config.Config;
 import meteorclient.utils.Utils;
 import meteorclient.utils.misc.Version;
@@ -29,7 +29,7 @@ public class TitleScreenMixin extends Screen {
     private void onRenderIdkDude(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo info) {
         if (Utils.firstTimeTitleScreen) {
             Utils.firstTimeTitleScreen = false;
-            MeteorClient.LOG.info("Checking latest version of UnderWare");
+            UnderWare.LOG.info("Checking latest version of UnderWare");
 
             MeteorExecutor.execute(() -> {
                 String res = Http.get("https://meteorclient.com/api/version").sendString();
@@ -37,11 +37,11 @@ public class TitleScreenMixin extends Screen {
 
                 Version latestVer = new Version(res);
 
-                if (latestVer.isHigherThan(MeteorClient.VERSION)) {
+                if (latestVer.isHigherThan(UnderWare.VERSION)) {
                     YesNoPrompt.create()
                         .title("New Update")
                         .message("A new version of Meteor has been released.")
-                        .message("Your version: %s", MeteorClient.VERSION)
+                        .message("Your version: %s", UnderWare.VERSION)
                         .message("Latest version: %s", latestVer)
                         .message("Do you want to update?")
                         .onYes(() -> Util.getOperatingSystem().open("https://meteorclient.com/"))

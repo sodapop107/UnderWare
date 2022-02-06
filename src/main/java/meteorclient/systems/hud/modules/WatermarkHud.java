@@ -1,6 +1,6 @@
 package meteorclient.systems.hud.modules;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.systems.hud.HUD;
 
 public class WatermarkHud extends DoubleTextHudElement {
@@ -10,10 +10,10 @@ public class WatermarkHud extends DoubleTextHudElement {
 
     @Override
     protected String getRight() {
-        if (MeteorClient.DEV_BUILD.isEmpty()) {
-            return MeteorClient.VERSION.toString();
+        if (UnderWare.DEV_BUILD.isEmpty()) {
+            return UnderWare.VERSION.toString();
         }
 
-        return MeteorClient.VERSION + " " + MeteorClient.DEV_BUILD;
+        return UnderWare.VERSION + " " + UnderWare.DEV_BUILD;
     }
 }

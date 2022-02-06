@@ -4,7 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import joptsimple.internal.Strings;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.packets.PacketEvent;
 import meteorclient.events.world.TickEvent;
 import meteorclient.systems.commands.Command;
@@ -54,7 +54,7 @@ public class ServerCommand extends Command {
 
         builder.then(literal("plugins").executes(ctx -> {
             ticks = 0;
-            MeteorClient.EVENT_BUS.subscribe(this);
+            UnderWare.EVENT_BUS.subscribe(this);
             mc.player.networkHandler.sendPacket(new RequestCommandCompletionsC2SPacket(0, "/"));
             return SINGLE_SUCCESS;
         }));
@@ -164,7 +164,7 @@ public class ServerCommand extends Command {
 
         if (ticks >= 5000) {
             error("Plugins check timed out");
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
             ticks = 0;
         }
     }
@@ -205,13 +205,13 @@ public class ServerCommand extends Command {
                 }
 
                 ticks = 0;
-                MeteorClient.EVENT_BUS.unsubscribe(this);
+                UnderWare.EVENT_BUS.unsubscribe(this);
             }
 
         } catch (Exception e) {
             error("An error occurred while trying to find plugins");
             ticks = 0;
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
         }
     }
 

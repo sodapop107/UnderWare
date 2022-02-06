@@ -8,7 +8,7 @@ import meteorclient.gui.widgets.pressable.WPressable;
 import meteorclient.systems.modules.Module;
 import meteorclient.utils.Utils;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 @Mixin(PlayerInteractEntityC2SPacket.class)
 public class PlayerInteractEntityC2SPacketMixin implements IPlayerInteractEntityC2SPacket {

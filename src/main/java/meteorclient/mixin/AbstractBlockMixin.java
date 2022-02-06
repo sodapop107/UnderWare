@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.AmbientOcclusionEvent;
 import meteorclient.events.world.CollisionShapeEvent;
 import net.minecraft.block.AbstractBlock;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class AbstractBlockMixin {
     @Inject(method = "getAmbientOcclusionLightLevel", at = @At("HEAD"), cancellable = true)
     private void onGetAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> info) {
-        AmbientOcclusionEvent event = MeteorClient.EVENT_BUS.post(AmbientOcclusionEvent.get());
+        AmbientOcclusionEvent event = UnderWare.EVENT_BUS.post(AmbientOcclusionEvent.get());
 
         if (event.lightLevel != -1) info.setReturnValue(event.lightLevel);
     }
@@ -26,11 +26,11 @@ public class AbstractBlockMixin {
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void onGetCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> info) {
         if (!(state.getFluidState().isEmpty())) {
-            CollisionShapeEvent event = MeteorClient.EVENT_BUS.post(CollisionShapeEvent.get(state.getFluidState().getBlockState(), pos, CollisionShapeEvent.CollisionType.FLUID));
+            CollisionShapeEvent event = UnderWare.EVENT_BUS.post(CollisionShapeEvent.get(state.getFluidState().getBlockState(), pos, CollisionShapeEvent.CollisionType.FLUID));
 
             if (event.shape != null) info.setReturnValue(event.shape);
         } else {
-            CollisionShapeEvent event = MeteorClient.EVENT_BUS.post(CollisionShapeEvent.get(state, pos, CollisionShapeEvent.CollisionType.BLOCK));
+            CollisionShapeEvent event = UnderWare.EVENT_BUS.post(CollisionShapeEvent.get(state, pos, CollisionShapeEvent.CollisionType.BLOCK));
 
             if (event.shape != null) info.setReturnValue(event.shape);
         }

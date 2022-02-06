@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.DamageEvent;
 import meteorclient.events.entity.player.CanWalkOnFluidEvent;
 import meteorclient.systems.modules.Modules;
@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -37,13 +37,13 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "damage", at = @At("HEAD"))
     private void onDamageHead(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
-        if (Utils.canUpdate() && world.isClient) MeteorClient.EVENT_BUS.post(DamageEvent.get((LivingEntity) (Object) this, source));
+        if (Utils.canUpdate() && world.isClient) UnderWare.EVENT_BUS.post(DamageEvent.get((LivingEntity) (Object) this, source));
     }
 
     @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
     private void onCanWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> info) {
         if ((Object) this != mc.player) return;
-        CanWalkOnFluidEvent event = MeteorClient.EVENT_BUS.post(CanWalkOnFluidEvent.get(fluid));
+        CanWalkOnFluidEvent event = UnderWare.EVENT_BUS.post(CanWalkOnFluidEvent.get(fluid));
 
         info.setReturnValue(event.walkOnFluid);
     }

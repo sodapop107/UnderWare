@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.TickEvent;
 import meteorclient.mixin.ClientPlayNetworkHandlerAccessor;
 import meteorclient.mixin.MinecraftClientAccessor;
@@ -51,7 +51,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Utils {
@@ -67,7 +67,7 @@ public class Utils {
 
     @Init(stage = InitStage.Pre)
     public static void init() {
-        MeteorClient.EVENT_BUS.subscribe(Utils.class);
+        UnderWare.EVENT_BUS.subscribe(Utils.class);
     }
 
     @EventHandler

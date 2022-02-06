@@ -1,6 +1,6 @@
 package meteorclient.gui;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.gui.themes.meteor.MeteorGuiTheme;
 import meteorclient.utils.Init;
 import meteorclient.utils.InitStage;
@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GuiThemes {
-    private static final File FOLDER = new File(MeteorClient.FOLDER, "gui");
+    private static final File FOLDER = new File(UnderWare.FOLDER, "gui");
     private static final File THEMES_FOLDER = new File(FOLDER, "themes");
     private static final File FILE = new File(FOLDER, "gui.nbt");
 
@@ -46,7 +46,7 @@ public class GuiThemes {
             if (it.next().name.equals(theme.name)) {
                 it.remove();
 
-                MeteorClient.LOG.error("Theme with the name '{}' has already been added.", theme.name);
+                UnderWare.LOG.error("Theme with the name '{}' has already been added.", theme.name);
                 break;
             }
         }

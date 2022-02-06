@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.EntityDestroyEvent;
 import meteorclient.events.entity.player.PickItemsEvent;
 import meteorclient.events.game.GameJoinedEvent;
@@ -40,32 +40,32 @@ public abstract class ClientPlayNetworkHandlerMixin {
     @Inject(at = @At("TAIL"), method = "onGameJoin")
     private void onGameJoinTail(GameJoinS2CPacket packet, CallbackInfo info) {
         if (worldNotNull) {
-            MeteorClient.EVENT_BUS.post(GameLeftEvent.get());
+            UnderWare.EVENT_BUS.post(GameLeftEvent.get());
         }
 
-        MeteorClient.EVENT_BUS.post(GameJoinedEvent.get());
+        UnderWare.EVENT_BUS.post(GameJoinedEvent.get());
     }
 
     @Inject(at = @At("HEAD"), method = "onPlaySound")
     private void onPlaySound(PlaySoundS2CPacket packet, CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(PlaySoundPacketEvent.get(packet));
+        UnderWare.EVENT_BUS.post(PlaySoundPacketEvent.get(packet));
     }
 
     @Inject(method = "onChunkData", at = @At("TAIL"))
     private void onChunkData(ChunkDataS2CPacket packet, CallbackInfo info) {
         WorldChunk chunk = client.world.getChunk(packet.getX(), packet.getZ());
-        MeteorClient.EVENT_BUS.post(ChunkDataEvent.get(chunk));
+        UnderWare.EVENT_BUS.post(ChunkDataEvent.get(chunk));
     }
 
     @Inject(method = "onScreenHandlerSlotUpdate", at = @At("TAIL"))
     private void onContainerSlotUpdate(ScreenHandlerSlotUpdateS2CPacket packet, CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(ContainerSlotUpdateEvent.get(packet));
+        UnderWare.EVENT_BUS.post(ContainerSlotUpdateEvent.get(packet));
     }
 
     @Inject(method = "onEntitiesDestroy", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/EntitiesDestroyS2CPacket;getEntityIds()Lit/unimi/dsi/fastutil/ints/IntList;"))
     private void onEntitiesDestroy(EntitiesDestroyS2CPacket packet, CallbackInfo ci) {
         for (int id : packet.getEntityIds()) {
-            MeteorClient.EVENT_BUS.post(EntityDestroyEvent.get(client.world.getEntityById(id)));
+            UnderWare.EVENT_BUS.post(EntityDestroyEvent.get(client.world.getEntityById(id)));
         }
     }
 
@@ -85,7 +85,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
         Entity entity = client.world.getEntityById(packet.getCollectorEntityId());
 
         if (itemEntity instanceof ItemEntity && entity == client.player) {
-            MeteorClient.EVENT_BUS.post(PickItemsEvent.get(((ItemEntity) itemEntity).getStack(), packet.getStackAmount()));
+            UnderWare.EVENT_BUS.post(PickItemsEvent.get(((ItemEntity) itemEntity).getStack(), packet.getStackAmount()));
         }
     }
 }

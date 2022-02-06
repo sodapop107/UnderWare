@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class PlayerListEntryArgumentType implements ArgumentType<PlayerListEntry> {
 

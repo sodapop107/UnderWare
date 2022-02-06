@@ -1,7 +1,7 @@
 package meteorclient.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.render.Render2DEvent;
 import meteorclient.systems.modules.Modules;
 import meteorclient.systems.modules.render.Freecam;
@@ -38,7 +38,7 @@ public abstract class InGameHudMixin {
 
         Utils.unscaledProjection();
 
-        MeteorClient.EVENT_BUS.post(Render2DEvent.get(scaledWidth, scaledHeight, tickDelta));
+        UnderWare.EVENT_BUS.post(Render2DEvent.get(scaledWidth, scaledHeight, tickDelta));
 
         Utils.scaledProjection();
         RenderSystem.applyModelViewMatrix();

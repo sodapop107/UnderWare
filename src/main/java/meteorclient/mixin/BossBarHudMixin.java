@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.render.RenderBossBarEvent;
 import meteorclient.systems.modules.Modules;
 import meteorclient.systems.modules.render.NoRender;
@@ -23,19 +23,19 @@ public class BossBarHudMixin {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Ljava/util/Collection;iterator()Ljava/util/Iterator;"))
     public Iterator<ClientBossBar> onRender(Collection<ClientBossBar> collection) {
-        RenderBossBarEvent.BossIterator event = MeteorClient.EVENT_BUS.post(RenderBossBarEvent.BossIterator.get(collection.iterator()));
+        RenderBossBarEvent.BossIterator event = UnderWare.EVENT_BUS.post(RenderBossBarEvent.BossIterator.get(collection.iterator()));
         return event.iterator;
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ClientBossBar;getName()Lnet/minecraft/text/Text;"))
     public Text onAsFormattedString(ClientBossBar clientBossBar) {
-        RenderBossBarEvent.BossText event = MeteorClient.EVENT_BUS.post(RenderBossBarEvent.BossText.get(clientBossBar, clientBossBar.getName()));
+        RenderBossBarEvent.BossText event = UnderWare.EVENT_BUS.post(RenderBossBarEvent.BossText.get(clientBossBar, clientBossBar.getName()));
         return event.name;
     }
 
     @ModifyConstant(method = "render", constant = @Constant(intValue = 9, ordinal = 1))
     public int modifySpacingConstant(int j) {
-        RenderBossBarEvent.BossSpacing event = MeteorClient.EVENT_BUS.post(RenderBossBarEvent.BossSpacing.get(j));
+        RenderBossBarEvent.BossSpacing event = UnderWare.EVENT_BUS.post(RenderBossBarEvent.BossSpacing.get(j));
         return event.spacing;
     }
 }

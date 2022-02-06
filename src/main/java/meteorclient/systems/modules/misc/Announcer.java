@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.misc;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.DropItemsEvent;
 import meteorclient.events.entity.player.BreakBlockEvent;
 import meteorclient.events.entity.player.PickItemsEvent;
@@ -35,7 +35,7 @@ public class Announcer extends Module {
     public void onActivate() {
         for (Feature feature : features) {
             if (feature.isEnabled()) {
-                MeteorClient.EVENT_BUS.subscribe(feature);
+                UnderWare.EVENT_BUS.subscribe(feature);
                 feature.reset();
             }
         }
@@ -45,7 +45,7 @@ public class Announcer extends Module {
     public void onDeactivate() {
         for (Feature feature : features) {
             if (feature.isEnabled()) {
-                MeteorClient.EVENT_BUS.unsubscribe(feature);
+                UnderWare.EVENT_BUS.unsubscribe(feature);
             }
         }
     }
@@ -71,10 +71,10 @@ public class Announcer extends Module {
                     .defaultValue(true)
                     .onChanged(aBoolean -> {
                         if (isActive() && isEnabled()) {
-                            MeteorClient.EVENT_BUS.subscribe(this);
+                            UnderWare.EVENT_BUS.subscribe(this);
                             reset();
                         } else if (isActive() && !isEnabled()) {
-                            MeteorClient.EVENT_BUS.unsubscribe(this);
+                            UnderWare.EVENT_BUS.unsubscribe(this);
                         }
                     })
                     .build()

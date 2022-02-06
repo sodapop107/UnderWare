@@ -9,7 +9,7 @@ import meteorclient.gui.widgets.pressable.WPressable;
 import meteorclient.utils.render.color.Color;
 import net.minecraft.client.gui.screen.Screen;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 
 public abstract class WTopBar extends WHorizontalList {

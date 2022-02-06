@@ -1,7 +1,7 @@
 package meteorclient.mixin;
 
 import io.netty.channel.ChannelHandlerContext;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.packets.PacketEvent;
 import meteorclient.events.world.ConnectToServerEvent;
 import meteorclient.systems.modules.Modules;
@@ -27,7 +27,7 @@ import java.net.InetSocketAddress;
 public class ClientConnectionMixin {
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private static <T extends PacketListener> void onHandlePacket(Packet<T> packet, PacketListener listener, CallbackInfo info) {
-        if (MeteorClient.EVENT_BUS.post(PacketEvent.Receive.get(packet)).isCancelled()) info.cancel();
+        if (UnderWare.EVENT_BUS.post(PacketEvent.Receive.get(packet)).isCancelled()) info.cancel();
     }
 
     @Inject(method = "disconnect", at = @At("HEAD"))
@@ -42,7 +42,7 @@ public class ClientConnectionMixin {
 
     @Inject(method = "connect", at = @At("HEAD"))
     private static void onConnect(InetSocketAddress address, boolean useEpoll, CallbackInfoReturnable<ClientConnection> info) {
-        MeteorClient.EVENT_BUS.post(ConnectToServerEvent.get());
+        UnderWare.EVENT_BUS.post(ConnectToServerEvent.get());
     }
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
@@ -52,11 +52,11 @@ public class ClientConnectionMixin {
 
     @Inject(at = @At("HEAD"), method = "send(Lnet/minecraft/network/Packet;)V", cancellable = true)
     private void onSendPacketHead(Packet<?> packet, CallbackInfo info) {
-        if (MeteorClient.EVENT_BUS.post(PacketEvent.Send.get(packet)).isCancelled()) info.cancel();
+        if (UnderWare.EVENT_BUS.post(PacketEvent.Send.get(packet)).isCancelled()) info.cancel();
     }
 
     @Inject(method = "send(Lnet/minecraft/network/Packet;)V", at = @At("TAIL"))
     private void onSendPacketTail(Packet<?> packet, CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(PacketEvent.Sent.get(packet));
+        UnderWare.EVENT_BUS.post(PacketEvent.Sent.get(packet));
     }
 }

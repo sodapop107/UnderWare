@@ -4,7 +4,7 @@ package meteorclient.systems.modules.misc;
 
 import meteordevelopment.DiscordIPC;
 import meteordevelopment.RichPresence;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.OpenScreenEvent;
 import meteorclient.events.world.TickEvent;
 import meteorclient.gui.GuiTheme;
@@ -120,8 +120,8 @@ public class DiscordPresence extends Module {
 
         rpc.setStart(System.currentTimeMillis() / 1000L);
 
-        String largeText = "UnderWare " + MeteorClient.VERSION;
-        if (!MeteorClient.DEV_BUILD.isEmpty()) largeText += " Dev Build: " + MeteorClient.DEV_BUILD;
+        String largeText = "UnderWare " + UnderWare.VERSION;
+        if (!UnderWare.DEV_BUILD.isEmpty()) largeText += " Dev Build: " + UnderWare.DEV_BUILD;
         rpc.setLargeImage("meteor_client", largeText);
 
         currentSmallImage = SmallImage.Snail;
@@ -228,7 +228,7 @@ public class DiscordPresence extends Module {
         }
         else {
             if (!lastWasInMainMenu) {
-                rpc.setDetails("UnderWare " + (MeteorClient.DEV_BUILD.isEmpty() ? MeteorClient.VERSION : MeteorClient.VERSION + " " + MeteorClient.DEV_BUILD));
+                rpc.setDetails("UnderWare " + (UnderWare.DEV_BUILD.isEmpty() ? UnderWare.VERSION : UnderWare.VERSION + " " + UnderWare.DEV_BUILD));
 
                 if (mc.currentScreen instanceof TitleScreen) rpc.setState("Looking at title screen");
                 else if (mc.currentScreen instanceof SelectWorldScreen) rpc.setState("Selecting world");

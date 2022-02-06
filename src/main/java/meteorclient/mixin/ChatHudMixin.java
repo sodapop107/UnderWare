@@ -1,7 +1,7 @@
 package meteorclient.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.ReceiveMessageEvent;
 import meteorclient.mixininterface.IChatHud;
 import meteorclient.systems.modules.Modules;
@@ -50,7 +50,7 @@ public abstract class ChatHudMixin implements IChatHud {
     private void onAddMessage(Text text, int id, CallbackInfo info) {
         if (skipOnAddMessage) return;
 
-        ReceiveMessageEvent event = MeteorClient.EVENT_BUS.post(ReceiveMessageEvent.get(text, id));
+        ReceiveMessageEvent event = UnderWare.EVENT_BUS.post(ReceiveMessageEvent.get(text, id));
 
         if (event.isCancelled()) info.cancel();
         else if (event.isModified()) {

@@ -3,7 +3,7 @@ package meteorclient.systems.commands.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.packets.PacketEvent;
 import meteorclient.events.world.TickEvent;
 import meteorclient.systems.commands.Command;
@@ -72,9 +72,9 @@ public class NotebotCommand extends Command {
             if (name == null || name.equals("")) {
                 throw INVALID_NAME.create();
             }
-            Path path = MeteorClient.FOLDER.toPath().resolve(String.format("notebot/%s.txt", name));
+            Path path = UnderWare.FOLDER.toPath().resolve(String.format("notebot/%s.txt", name));
             if (!path.toFile().exists()) {
-                path = MeteorClient.FOLDER.toPath().resolve(String.format("notebot/%s.nbs", name));
+                path = UnderWare.FOLDER.toPath().resolve(String.format("notebot/%s.nbs", name));
             }
             notebot.loadSong(path.toFile());
             return SINGLE_SUCCESS;
@@ -86,9 +86,9 @@ public class NotebotCommand extends Command {
             if (name == null || name.equals("")) {
                 throw INVALID_NAME.create();
             }
-            Path path = MeteorClient.FOLDER.toPath().resolve(String.format("notebot/%s.txt", name));
+            Path path = UnderWare.FOLDER.toPath().resolve(String.format("notebot/%s.txt", name));
             if (!path.toFile().exists()) {
-                path = MeteorClient.FOLDER.toPath().resolve(String.format("notebot/%s.nbs", name));
+                path = UnderWare.FOLDER.toPath().resolve(String.format("notebot/%s.nbs", name));
             }
             notebot.previewSong(path.toFile());
             return SINGLE_SUCCESS;
@@ -97,13 +97,13 @@ public class NotebotCommand extends Command {
         builder.then(literal("record").then(literal("start").executes(ctx -> {
             ticks = -1;
             song.clear();
-            MeteorClient.EVENT_BUS.subscribe(this);
+            UnderWare.EVENT_BUS.subscribe(this);
             info("Recording started");
             return SINGLE_SUCCESS;
         })));
 
         builder.then(literal("record").then(literal("cancel").executes(ctx -> {
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
             info("Recording cancelled");
             return SINGLE_SUCCESS;
         })));
@@ -113,7 +113,7 @@ public class NotebotCommand extends Command {
             if (name == null || name.equals("")) {
                 throw INVALID_NAME.create();
             }
-            Path path = MeteorClient.FOLDER.toPath().resolve(String.format("notebot/%s.txt", name));
+            Path path = UnderWare.FOLDER.toPath().resolve(String.format("notebot/%s.txt", name));
             saveRecording(path);
             return SINGLE_SUCCESS;
         }))));
@@ -135,7 +135,7 @@ public class NotebotCommand extends Command {
 
     private void saveRecording(Path path) {
         if (song.size() < 1) {
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
             return;
         }
         try {
@@ -150,10 +150,10 @@ public class NotebotCommand extends Command {
             file.write(String.format("%d:%d", note.get(0), note.get(1)));
             file.close();
             info(String.format("Song saved. Length: (highlight)%d(default).", note.get(0)));
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
         } catch (IOException e) {
             info("Couldn't create the file.");
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
         }
 
     }

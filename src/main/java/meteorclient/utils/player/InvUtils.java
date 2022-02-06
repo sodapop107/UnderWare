@@ -9,7 +9,7 @@ import net.minecraft.screen.slot.SlotActionType;
 
 import java.util.function.Predicate;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class InvUtils {
     private static final Action ACTION = new Action();

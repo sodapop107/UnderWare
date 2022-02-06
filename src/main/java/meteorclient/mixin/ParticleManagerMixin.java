@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.ParticleEvent;
 import meteorclient.systems.modules.Modules;
 import meteorclient.systems.modules.render.NoRender;
@@ -27,7 +27,7 @@ public abstract class ParticleManagerMixin {
 
     @Inject(method = "addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)Lnet/minecraft/client/particle/Particle;", at = @At("HEAD"), cancellable = true)
     private void onAddParticle(ParticleEffect parameters, double x, double y, double z, double velocityX, double velocityY, double velocityZ, CallbackInfoReturnable<Particle> info) {
-        ParticleEvent event = MeteorClient.EVENT_BUS.post(ParticleEvent.get(parameters));
+        ParticleEvent event = UnderWare.EVENT_BUS.post(ParticleEvent.get(parameters));
 
         if (event.isCancelled()) {
             if (parameters.getType() == ParticleTypes.FLASH) info.setReturnValue(createParticle(parameters, x, y, z, velocityX, velocityY, velocityZ));

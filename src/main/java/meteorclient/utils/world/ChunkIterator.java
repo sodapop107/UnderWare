@@ -8,7 +8,7 @@ import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.Iterator;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class ChunkIterator implements Iterator<Chunk> {
     private final int px, pz;

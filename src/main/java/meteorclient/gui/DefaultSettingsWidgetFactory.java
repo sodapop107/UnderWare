@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class DefaultSettingsWidgetFactory implements SettingsWidgetFactory {
     protected interface Factory {

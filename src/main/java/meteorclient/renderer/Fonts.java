@@ -1,6 +1,6 @@
 package meteorclient.renderer;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.gui.WidgetScreen;
 import meteorclient.renderer.text.CustomTextRenderer;
 import meteorclient.systems.config.Config;
@@ -12,12 +12,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class Fonts {
     private static final String[] BUILTIN_FONTS = { "JetBrains Mono.ttf", "Comfortaa.ttf", "Tw Cen MT.ttf", "Pixelation.ttf" };
     public static final String DEFAULT_FONT = "JetBrains Mono";
-    private static final File FOLDER = new File(MeteorClient.FOLDER, "fonts");
+    private static final File FOLDER = new File(UnderWare.FOLDER, "fonts");
 
     public static CustomTextRenderer CUSTOM_FONT;
 
@@ -31,7 +31,7 @@ public class Fonts {
         for (String font : BUILTIN_FONTS) {
             File file = new File(FOLDER, font);
             if (!file.exists()) {
-                StreamUtils.copy(Fonts.class.getResourceAsStream("/assets/" + MeteorClient.MOD_ID + "/fonts/" + font), file);
+                StreamUtils.copy(Fonts.class.getResourceAsStream("/assets/" + UnderWare.MOD_ID + "/fonts/" + font), file);
             }
         }
 

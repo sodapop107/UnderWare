@@ -3,7 +3,7 @@ package meteorclient.mixin;
 import baritone.api.BaritoneAPI;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.DamageEvent;
 import meteorclient.events.entity.DropItemsEvent;
 import meteorclient.events.entity.player.SendMovementPacketsEvent;
@@ -48,7 +48,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
     private void onDropSelectedItem(boolean dropEntireStack, CallbackInfoReturnable<Boolean> info) {
-        if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(getMainHandStack())).isCancelled()) info.setReturnValue(false);
+        if (UnderWare.EVENT_BUS.post(DropItemsEvent.get(getMainHandStack())).isCancelled()) info.setReturnValue(false);
     }
 
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
@@ -56,7 +56,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         if (ignoreChatMessage) return;
 
         if (!message.startsWith(Config.get().prefix.get()) && !message.startsWith("/") && !message.startsWith(BaritoneAPI.getSettings().prefix.value)) {
-            SendMessageEvent event = MeteorClient.EVENT_BUS.post(SendMessageEvent.get(message));
+            SendMessageEvent event = UnderWare.EVENT_BUS.post(SendMessageEvent.get(message));
 
             if (!event.isCancelled()) {
                 ignoreChatMessage = true;
@@ -113,29 +113,29 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Inject(method = "damage", at = @At("HEAD"))
     private void onDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
-        if (Utils.canUpdate() && world.isClient && canTakeDamage()) MeteorClient.EVENT_BUS.post(DamageEvent.get(this, source));
+        if (Utils.canUpdate() && world.isClient && canTakeDamage()) UnderWare.EVENT_BUS.post(DamageEvent.get(this, source));
     }
 
     // Rotations
 
     @Inject(method = "sendMovementPackets", at = @At("HEAD"))
     private void onSendMovementPacketsHead(CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(SendMovementPacketsEvent.Pre.get());
+        UnderWare.EVENT_BUS.post(SendMovementPacketsEvent.Pre.get());
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 0))
     private void onTickHasVehicleBeforeSendPackets(CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(SendMovementPacketsEvent.Pre.get());
+        UnderWare.EVENT_BUS.post(SendMovementPacketsEvent.Pre.get());
     }
 
     @Inject(method = "sendMovementPackets", at = @At("TAIL"))
     private void onSendMovementPacketsTail(CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(SendMovementPacketsEvent.Post.get());
+        UnderWare.EVENT_BUS.post(SendMovementPacketsEvent.Post.get());
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 1, shift = At.Shift.AFTER))
     private void onTickHasVehicleAfterSendPackets(CallbackInfo info) {
-        MeteorClient.EVENT_BUS.post(SendMovementPacketsEvent.Post.get());
+        UnderWare.EVENT_BUS.post(SendMovementPacketsEvent.Post.get());
     }
 
     // Sneak

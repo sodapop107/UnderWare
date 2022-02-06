@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.render;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.WindowResizedEvent;
 import meteorclient.events.render.RenderAfterWorldEvent;
 import meteorclient.gui.WidgetScreen;
@@ -92,14 +92,14 @@ public class Blur extends Module {
         super(Categories.Render, "blur", "Blurs background when in GUI screens.");
 
         // The listeners need to run even when the module is not enabled
-        MeteorClient.EVENT_BUS.subscribe(new ConsumerListener<>(WindowResizedEvent.class, event -> {
+        UnderWare.EVENT_BUS.subscribe(new ConsumerListener<>(WindowResizedEvent.class, event -> {
             if (fbo1 != null) {
                 fbo1.resize();
                 fbo2.resize();
             }
         }));
 
-        MeteorClient.EVENT_BUS.subscribe(new ConsumerListener<>(RenderAfterWorldEvent.class, event -> onRenderAfterWorld()));
+        UnderWare.EVENT_BUS.subscribe(new ConsumerListener<>(RenderAfterWorldEvent.class, event -> onRenderAfterWorld()));
     }
 
     private void onRenderAfterWorld() {

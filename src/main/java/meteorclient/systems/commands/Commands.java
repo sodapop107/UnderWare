@@ -12,7 +12,7 @@ import net.minecraft.command.CommandSource;
 
 import java.util.*;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class Commands extends System<Commands> {
     private final CommandDispatcher<CommandSource> DISPATCHER = new CommandDispatcher<>();

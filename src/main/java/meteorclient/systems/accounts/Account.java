@@ -8,7 +8,7 @@ import meteorclient.utils.misc.NbtException;
 import net.minecraft.client.util.Session;
 import net.minecraft.nbt.NbtCompound;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public abstract class Account<T extends Account<?>> implements ISerializable<T> {
     protected AccountType type;

@@ -1,6 +1,6 @@
 package meteorclient.utils.network;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.TickEvent;
 import meteorclient.utils.Init;
 import meteorclient.utils.InitStage;
@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class Capes {
     private static final String CAPE_OWNERS_URL = "https://meteorclient.com/api/capeowners";
@@ -61,7 +61,7 @@ public class Capes {
             });
         });
 
-        MeteorClient.EVENT_BUS.subscribe(Capes.class);
+        UnderWare.EVENT_BUS.subscribe(Capes.class);
     }
 
     @EventHandler

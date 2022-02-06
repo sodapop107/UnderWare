@@ -1,6 +1,6 @@
 package meteorclient.gui.widgets.input;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.player.InteractBlockEvent;
 import meteorclient.events.entity.player.StartBreakingBlockEvent;
 import meteorclient.gui.widgets.containers.WHorizontalList;
@@ -12,7 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static meteorclient.utils.Utils.canUpdate;
 
 public class WBlockPosEdit extends WHorizontalList {
@@ -44,7 +44,7 @@ public class WBlockPosEdit extends WHorizontalList {
                 Modules.get().get(Marker.class).info(sb);
 
                 clicking = true;
-                MeteorClient.EVENT_BUS.subscribe(this);
+                UnderWare.EVENT_BUS.subscribe(this);
                 previousScreen = mc.currentScreen;
                 mc.setScreen(null);
             };
@@ -66,7 +66,7 @@ public class WBlockPosEdit extends WHorizontalList {
         if (clicking) {
             clicking = false;
             event.cancel();
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
             mc.setScreen(previousScreen);
         }
     }
@@ -81,7 +81,7 @@ public class WBlockPosEdit extends WHorizontalList {
 
             clicking = false;
             event.cancel();
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
             mc.setScreen(previousScreen);
         }
     }

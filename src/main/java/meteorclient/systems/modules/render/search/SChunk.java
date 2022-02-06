@@ -12,7 +12,7 @@ import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static meteorclient.utils.Utils.getRenderDistance;
 
 public class SChunk {

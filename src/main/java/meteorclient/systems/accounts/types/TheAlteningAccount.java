@@ -6,7 +6,7 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.mixin.MinecraftClientAccessor;
 import meteorclient.systems.accounts.Account;
 import meteorclient.systems.accounts.AccountType;
@@ -15,7 +15,7 @@ import net.minecraft.client.util.Session;
 
 import java.util.Optional;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class TheAlteningAccount extends Account<TheAlteningAccount> {
     private static final String AUTH = "http://authserver.thealtening.com";
@@ -59,7 +59,7 @@ public class TheAlteningAccount extends Account<TheAlteningAccount> {
             cache.username = auth.getSelectedProfile().getName();
             return true;
         } catch (AuthenticationException e) {
-            MeteorClient.LOG.error("Failed to login with TheAltening.");
+            UnderWare.LOG.error("Failed to login with TheAltening.");
             return false;
         }
     }

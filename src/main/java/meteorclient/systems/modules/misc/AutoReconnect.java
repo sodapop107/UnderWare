@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.misc;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.ConnectToServerEvent;
 import meteorclient.settings.DoubleSetting;
 import meteorclient.settings.Setting;
@@ -26,7 +26,7 @@ public class AutoReconnect extends Module {
 
     public AutoReconnect() {
         super(Categories.Misc, "auto-reconnect", "Automatically reconnects when disconnected from a server.");
-        MeteorClient.EVENT_BUS.subscribe(new StaticListener());
+        UnderWare.EVENT_BUS.subscribe(new StaticListener());
     }
 
     private class StaticListener {

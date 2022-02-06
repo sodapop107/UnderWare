@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.misc;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.render.Render3DEvent;
 import meteorclient.events.world.TickEvent;
 import meteorclient.gui.GuiTheme;
@@ -229,7 +229,7 @@ public class Notebot extends Module {
         noSongsFound = true;
 
         try {
-            Files.list(MeteorClient.FOLDER.toPath().resolve("notebot")).forEach(path -> {
+            Files.list(UnderWare.FOLDER.toPath().resolve("notebot")).forEach(path -> {
                 if (isValidFile(path)) {
                     noSongsFound = false;
                     table.add(theme.label(getFileLabel(path))).expandCellX();

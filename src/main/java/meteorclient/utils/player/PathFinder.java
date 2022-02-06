@@ -1,6 +1,6 @@
 package meteorclient.utils.player;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.player.PlayerMoveEvent;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.block.Block;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class PathFinder {
     private final static int PATH_AHEAD = 3;
@@ -149,14 +149,14 @@ public class PathFinder {
     public void initiate(Entity entity) {
         target = entity;
         if (target != null) currentPathBlock = getNextPathBlock();
-        MeteorClient.EVENT_BUS.subscribe(this);
+        UnderWare.EVENT_BUS.subscribe(this);
     }
 
     public void disable() {
         target = null;
         path.clear();
         if (mc.options.keyForward.isPressed()) mc.options.keyForward.setPressed(false);
-        MeteorClient.EVENT_BUS.unsubscribe(this);
+        UnderWare.EVENT_BUS.unsubscribe(this);
     }
 
     public class PathBlock {

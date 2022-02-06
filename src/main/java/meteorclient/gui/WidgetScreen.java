@@ -1,6 +1,6 @@
 package meteorclient.gui;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.gui.renderer.GuiDebugRenderer;
 import meteorclient.gui.renderer.GuiRenderer;
 import meteorclient.gui.tabs.TabScreen;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 import static meteorclient.utils.Utils.getWindowHeight;
 import static meteorclient.utils.Utils.getWindowWidth;
 import static org.lwjgl.glfw.GLFW.*;
@@ -85,7 +85,7 @@ public abstract class WidgetScreen extends Screen {
 
     @Override
     protected void init() {
-        MeteorClient.EVENT_BUS.subscribe(this);
+        UnderWare.EVENT_BUS.subscribe(this);
 
         closed = false;
 
@@ -316,7 +316,7 @@ public abstract class WidgetScreen extends Screen {
                 }
             });
 
-            MeteorClient.EVENT_BUS.unsubscribe(this);
+            UnderWare.EVENT_BUS.unsubscribe(this);
             GuiKeyEvents.canUseKeys = true;
 
             if (onClosed != null) {

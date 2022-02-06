@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.render;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.TickEvent;
 import meteorclient.settings.EnumSetting;
 import meteorclient.settings.IntSetting;
@@ -48,7 +48,7 @@ public class Fullbright extends Module {
     public Fullbright() {
         super(Categories.Render, "fullbright", "Lights up your world!");
 
-        MeteorClient.EVENT_BUS.subscribe(StaticListener.class);
+        UnderWare.EVENT_BUS.subscribe(StaticListener.class);
     }
 
     @Override

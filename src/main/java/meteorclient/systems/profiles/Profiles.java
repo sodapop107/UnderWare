@@ -1,6 +1,6 @@
 package meteorclient.systems.profiles;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.GameJoinedEvent;
 import meteorclient.systems.System;
 import meteorclient.systems.Systems;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Profiles extends System<Profiles> implements Iterable<Profile> {
 
-    public static final File FOLDER = new File(MeteorClient.FOLDER, "profiles");
+    public static final File FOLDER = new File(UnderWare.FOLDER, "profiles");
     private List<Profile> profiles = new ArrayList<>();
 
     public Profiles() {

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class TitleScreenCreditsRenderer {
     private static final int WHITE = Color.fromRGBA(255, 255, 255, 255);

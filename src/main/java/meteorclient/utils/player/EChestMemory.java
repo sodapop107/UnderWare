@@ -1,6 +1,6 @@
 package meteorclient.utils.player;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.OpenScreenEvent;
 import meteorclient.events.world.BlockActivateEvent;
 import meteorclient.utils.Init;
@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.util.collection.DefaultedList;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class EChestMemory {
     public static final DefaultedList<ItemStack> ITEMS = DefaultedList.ofSize(27, ItemStack.EMPTY);
@@ -21,7 +21,7 @@ public class EChestMemory {
 
     @Init(stage = InitStage.Pre)
     public static void init() {
-        MeteorClient.EVENT_BUS.subscribe(EChestMemory.class);
+        UnderWare.EVENT_BUS.subscribe(EChestMemory.class);
     }
 
     @EventHandler

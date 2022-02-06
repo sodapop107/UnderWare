@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class BlockDataSettingScreen extends WindowScreen {
     private static final List<Block> BLOCKS = new ArrayList<>(100);

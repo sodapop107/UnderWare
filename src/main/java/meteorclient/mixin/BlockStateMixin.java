@@ -2,7 +2,7 @@ package meteorclient.mixin;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.BlockActivateEvent;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -23,7 +23,7 @@ public abstract class BlockStateMixin extends AbstractBlock.AbstractBlockState {
 
     @Override
     public ActionResult onUse(World world, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        MeteorClient.EVENT_BUS.post(BlockActivateEvent.get((BlockState) (Object) this));
+        UnderWare.EVENT_BUS.post(BlockActivateEvent.get((BlockState) (Object) this));
         return super.onUse(world, player, hand, hit);
     }
 }

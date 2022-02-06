@@ -2,7 +2,7 @@ package meteorclient.utils.player;
 
 import net.minecraft.util.Hand;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public record FindItemResult(int slot, int count) {
     public boolean found() {

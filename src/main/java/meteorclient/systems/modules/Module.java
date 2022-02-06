@@ -1,6 +1,6 @@
 package meteorclient.systems.modules;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.gui.GuiTheme;
 import meteorclient.gui.widgets.WWidget;
 import meteorclient.settings.Settings;
@@ -63,13 +63,13 @@ public abstract class Module implements ISerializable<Module>, Comparable<Module
             settings.onActivated();
 
             if (runInMainMenu || Utils.canUpdate()) {
-                if (autoSubscribe) MeteorClient.EVENT_BUS.subscribe(this);
+                if (autoSubscribe) UnderWare.EVENT_BUS.subscribe(this);
                 onActivate();
             }
         }
         else {
             if (runInMainMenu || Utils.canUpdate()) {
-                if (autoSubscribe) MeteorClient.EVENT_BUS.unsubscribe(this);
+                if (autoSubscribe) UnderWare.EVENT_BUS.unsubscribe(this);
                 onDeactivate();
             }
 

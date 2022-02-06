@@ -1,6 +1,6 @@
 package meteorclient.systems.waypoints;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.GameJoinedEvent;
 import meteorclient.events.game.GameLeftEvent;
 import meteorclient.events.render.Render2DEvent;
@@ -29,7 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class Waypoints extends System<Waypoints> implements Iterable<Waypoint> {
     private static final String[] BUILTIN_ICONS = {"square", "circle", "triangle", "star", "diamond", "skull"};
@@ -50,7 +50,7 @@ public class Waypoints extends System<Waypoints> implements Iterable<Waypoint> {
 
     @Override
     public void init() {
-        File iconsFolder = new File(new File(MeteorClient.FOLDER, "waypoints"), "icons");
+        File iconsFolder = new File(new File(UnderWare.FOLDER, "waypoints"), "icons");
         iconsFolder.mkdirs();
 
         for (String builtinIcon : BUILTIN_ICONS) {
@@ -174,7 +174,7 @@ public class Waypoints extends System<Waypoints> implements Iterable<Waypoint> {
     @Override
     public File getFile() {
         if (!Utils.canUpdate()) return null;
-        return new File(new File(MeteorClient.FOLDER, "waypoints"), Utils.getWorldName() + ".nbt");
+        return new File(new File(UnderWare.FOLDER, "waypoints"), Utils.getWorldName() + ".nbt");
     }
 
     @Override
@@ -201,6 +201,6 @@ public class Waypoints extends System<Waypoints> implements Iterable<Waypoint> {
     }
 
     private void copyIcon(File file) {
-        StreamUtils.copy(Waypoints.class.getResourceAsStream("/assets/" + MeteorClient.MOD_ID + "/textures/icons/waypoints/" + file.getName()), file);
+        StreamUtils.copy(Waypoints.class.getResourceAsStream("/assets/" + UnderWare.MOD_ID + "/textures/icons/waypoints/" + file.getName()), file);
     }
 }

@@ -1,6 +1,6 @@
 package meteorclient.utils.world;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.world.TickEvent;
 import meteorclient.mixininterface.IVec3d;
 import meteorclient.utils.Init;
@@ -24,7 +24,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
-import static meteorclient.MeteorClient.mc;
+import static meteorclient.UnderWare.mc;
 
 public class BlockUtils {
     private static final Vec3d hitPos = new Vec3d(0, 0, 0);
@@ -34,7 +34,7 @@ public class BlockUtils {
 
     @Init(stage = InitStage.Pre)
     public static void init() {
-        MeteorClient.EVENT_BUS.subscribe(BlockUtils.class);
+        UnderWare.EVENT_BUS.subscribe(BlockUtils.class);
     }
 
     // Placing

@@ -1,6 +1,6 @@
 package meteorclient.systems;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.game.GameLeftEvent;
 import meteorclient.systems.accounts.Accounts;
 import meteorclient.systems.commands.Commands;
@@ -44,12 +44,12 @@ public class Systems {
         add(new Proxies());
         add(new HUD());
 
-        MeteorClient.EVENT_BUS.subscribe(Systems.class);
+        UnderWare.EVENT_BUS.subscribe(Systems.class);
     }
 
     private static System<?> add(System<?> system) {
         systems.put(system.getClass(), system);
-        MeteorClient.EVENT_BUS.subscribe(system);
+        UnderWare.EVENT_BUS.subscribe(system);
         system.init();
 
         return system;
@@ -64,11 +64,11 @@ public class Systems {
 
     public static void save(File folder) {
         long start = java.lang.System.currentTimeMillis();
-        MeteorClient.LOG.info("Saving");
+        UnderWare.LOG.info("Saving");
 
         for (System<?> system : systems.values()) system.save(folder);
 
-        MeteorClient.LOG.info("Saved in {} milliseconds.", java.lang.System.currentTimeMillis() - start);
+        UnderWare.LOG.info("Saved in {} milliseconds.", java.lang.System.currentTimeMillis() - start);
     }
 
     public static void save() {
@@ -77,12 +77,12 @@ public class Systems {
 
     public static void load(File folder) {
         long start = java.lang.System.currentTimeMillis();
-        MeteorClient.LOG.info("Loading");
+        UnderWare.LOG.info("Loading");
 
         for (Runnable task : preLoadTasks) task.run();
         for (System<?> system : systems.values()) system.load(folder);
 
-        MeteorClient.LOG.info("Loaded in {} milliseconds", java.lang.System.currentTimeMillis() - start);
+        UnderWare.LOG.info("Loaded in {} milliseconds", java.lang.System.currentTimeMillis() - start);
     }
 
     public static void load() {

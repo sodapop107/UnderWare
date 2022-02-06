@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import meteorclient.events.entity.DropItemsEvent;
 import meteorclient.events.entity.player.*;
 import meteorclient.mixininterface.IClientPlayerInteractionManager;
@@ -40,37 +40,37 @@ public abstract class ClientPlayerInteractionManagerMixin implements IClientPlay
     @Inject(method = "clickSlot", at = @At("HEAD"), cancellable = true)
     private void onClickSlot(int syncId, int slotId, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo info) {
         if (actionType == SlotActionType.THROW && slotId >= 0 && slotId < player.currentScreenHandler.slots.size()) {
-            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.slots.get(slotId).getStack())).isCancelled()) info.cancel();
+            if (UnderWare.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.slots.get(slotId).getStack())).isCancelled()) info.cancel();
         }
         else if (slotId == -999) {
             // Clicking outside of inventory
-            if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.getCursorStack())).isCancelled()) info.cancel();
+            if (UnderWare.EVENT_BUS.post(DropItemsEvent.get(player.currentScreenHandler.getCursorStack())).isCancelled()) info.cancel();
         }
     }
 
     @Inject(method = "attackBlock", at = @At("HEAD"), cancellable = true)
     private void onAttackBlock(BlockPos blockPos, Direction direction, CallbackInfoReturnable<Boolean> info) {
-        if (MeteorClient.EVENT_BUS.post(StartBreakingBlockEvent.get(blockPos, direction)).isCancelled()) info.cancel();
+        if (UnderWare.EVENT_BUS.post(StartBreakingBlockEvent.get(blockPos, direction)).isCancelled()) info.cancel();
     }
 
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     public void interactBlock(ClientPlayerEntity player, ClientWorld world, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if (MeteorClient.EVENT_BUS.post(InteractBlockEvent.get(player.getMainHandStack().isEmpty() ? Hand.OFF_HAND : hand, hitResult)).isCancelled()) cir.setReturnValue(ActionResult.FAIL);
+        if (UnderWare.EVENT_BUS.post(InteractBlockEvent.get(player.getMainHandStack().isEmpty() ? Hand.OFF_HAND : hand, hitResult)).isCancelled()) cir.setReturnValue(ActionResult.FAIL);
     }
 
     @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
     private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo info) {
-        if (MeteorClient.EVENT_BUS.post(AttackEntityEvent.get(target)).isCancelled()) info.cancel();
+        if (UnderWare.EVENT_BUS.post(AttackEntityEvent.get(target)).isCancelled()) info.cancel();
     }
 
     @Inject(method = "interactEntity", at = @At("HEAD"), cancellable = true)
     private void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> info) {
-        if (MeteorClient.EVENT_BUS.post(InteractEntityEvent.get(entity, hand)).isCancelled()) info.setReturnValue(ActionResult.FAIL);
+        if (UnderWare.EVENT_BUS.post(InteractEntityEvent.get(entity, hand)).isCancelled()) info.setReturnValue(ActionResult.FAIL);
     }
 
     @Inject(method = "dropCreativeStack", at = @At("HEAD"), cancellable = true)
     private void onDropCreativeStack(ItemStack stack, CallbackInfo info) {
-        if (MeteorClient.EVENT_BUS.post(DropItemsEvent.get(stack)).isCancelled()) info.cancel();
+        if (UnderWare.EVENT_BUS.post(DropItemsEvent.get(stack)).isCancelled()) info.cancel();
     }
 
     @Inject(method = "getReachDistance", at = @At("HEAD"), cancellable = true)
@@ -92,12 +92,12 @@ public abstract class ClientPlayerInteractionManagerMixin implements IClientPlay
 
     @Inject(method = "breakBlock", at = @At("HEAD"))
     private void onBreakBlock(BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
-        MeteorClient.EVENT_BUS.post(BreakBlockEvent.get(blockPos));
+        UnderWare.EVENT_BUS.post(BreakBlockEvent.get(blockPos));
     }
 
     @Inject(method = "interactItem", at = @At("HEAD"), cancellable = true)
     private void onInteractItem(PlayerEntity player, World world, Hand hand, CallbackInfoReturnable<ActionResult> info) {
-        InteractItemEvent event = MeteorClient.EVENT_BUS.post(InteractItemEvent.get(hand));
+        InteractItemEvent event = UnderWare.EVENT_BUS.post(InteractItemEvent.get(hand));
         if (event.toReturn != null) info.setReturnValue(event.toReturn);
     }
 

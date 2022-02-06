@@ -1,6 +1,6 @@
 package meteorclient.mixin;
 
-import meteorclient.MeteorClient;
+import meteorclient.UnderWare;
 import net.minecraft.resource.NamespaceResourceManager;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceImpl;
@@ -16,7 +16,7 @@ public class NamespaceResourceManagerMixin {
     @Inject(method = "getResource", at = @At("HEAD"), cancellable = true)
     private void onGetResource(Identifier id, CallbackInfoReturnable<Resource> info) {
         if (id.getNamespace().equals("meteor-client")) {
-            info.setReturnValue(new ResourceImpl("meteor-client", id, MeteorClient.class.getResourceAsStream("/assets/meteor-client/" + id.getPath()), null));
+            info.setReturnValue(new ResourceImpl("meteor-client", id, UnderWare.class.getResourceAsStream("/assets/meteor-client/" + id.getPath()), null));
         }
     }
 }
