@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "package": "meteorclient.mixin.indigo",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "meteorclient.MixinPlugin",
+  "client": [
+    "AbstractQuadRendererMixin",
+    "TerrainRenderContextMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
