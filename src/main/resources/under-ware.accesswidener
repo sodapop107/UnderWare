@@ -60,3 +60,14 @@ Accessible   field   net/minecraft/client/render/entity/BoatEntityRenderer textu
 
 Accessible   class   net/minecraft/client/render/MapRenderer$MapTexture
 Accessible   field   net/minecraft/client/render/MapRenderer$MapTexture texture Lnet/minecraft/client/texture/NativeImageBackedTexture;
+
+accessible	class	net/minecraft/class_742
+accessible	class	net/minecraft/class_5251
+accessible	class	net/minecraft/class_677$class_680
+accessible	class	net/minecraft/class_1921$class_4750
+accessible	class	net/minecraft/class_2824$class_5907
+accessible	class	net/minecraft/class_2824$class_5906
+accessible	class	net/minecraft/class_2824$class_5910
+accessible	class	net/minecraft/class_638$class_6234
+accessible	method	net/minecraft/class_5251	<init>	(I)V
+accessible	field	net/minecraft/class_742	field_3901	Lnet/minecraft/class_640;

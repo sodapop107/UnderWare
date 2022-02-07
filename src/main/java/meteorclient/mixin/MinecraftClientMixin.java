@@ -70,7 +70,7 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
         OnlinePlayers.update();
         doItemUseCalled = false;
 
-        getProfiler().push("meteor-client_pre_update");
+        getProfiler().push("under-ware_pre_update");
         UnderWare.EVENT_BUS.post(TickEvent.Pre.get());
         getProfiler().pop();
 
@@ -80,7 +80,7 @@ public abstract class MinecraftClientMixin implements IMinecraftClient {
 
     @Inject(at = @At("TAIL"), method = "tick")
     private void onTick(CallbackInfo info) {
-        getProfiler().push("meteor-client_post_update");
+        getProfiler().push("under-ware_post_update");
         UnderWare.EVENT_BUS.post(TickEvent.Post.get());
         getProfiler().pop();
     }

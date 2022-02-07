@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
 public class ContainerTooltipComponent implements TooltipComponent, MeteorTooltipData {
-    private static final Identifier TEXTURE_CONTAINER_BACKGROUND = new Identifier("meteor-client", "textures/container.png");
+    private static final Identifier TEXTURE_CONTAINER_BACKGROUND = new Identifier("under-ware", "textures/container.png");
 
     private final DefaultedList<ItemStack> items;
     private final Color color;

@@ -247,7 +247,7 @@ public class Notebot extends Module {
                 }
             });
         } catch (IOException e) {
-            table.add(theme.label("Missing meteor-client/notebot folder.")).expandCellX();
+            table.add(theme.label("Missing under-ware/notebot folder.")).expandCellX();
             table.row();
         }
 

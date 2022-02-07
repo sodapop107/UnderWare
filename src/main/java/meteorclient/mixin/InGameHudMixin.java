@@ -34,7 +34,7 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     private void onRender(MatrixStack matrixStack, float tickDelta, CallbackInfo info) {
-        client.getProfiler().push("meteor-client_render_2d");
+        client.getProfiler().push("under-ware_render_2d");
 
         Utils.unscaledProjection();
 

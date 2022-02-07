@@ -18,8 +18,8 @@ import java.util.stream.Stream;
 import static meteorclient.UnderWare.mc;
 
 public class Capes {
-    private static final String CAPE_OWNERS_URL = "https://meteorclient.com/api/capeowners";
-    private static final String CAPES_URL = "https://meteorclient.com/api/capes";
+    private static final String CAPE_OWNERS_URL = "https://raw.githubusercontent.com/Vbuuu/UnderWareResources/main/Cape/capeowners.html";
+    private static final String CAPES_URL = "https://raw.githubusercontent.com/Vbuuu/UnderWareResources/main/Cape/capes.html";
 
     private static final Map<UUID, String> OWNERS = new HashMap<>();
     private static final Map<String, String> URLS = new HashMap<>();
@@ -115,7 +115,7 @@ public class Capes {
         private int retryTimer;
 
         public Cape(String name) {
-            super("meteor-client", "capes/" + COUNT++);
+            super("under-ware", "capes/" + COUNT++);
 
             this.name = name;
         }

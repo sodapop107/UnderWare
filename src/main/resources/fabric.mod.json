@@ -1,13 +1,11 @@
 {
   "schemaVersion": 1,
   "name": "UnderWare",
-  "id": "meteor-client",
+  "id": "under-ware",
   "version": "${version}",
   "description": "Based utility mod.",
   "authors": [
-    "MineGame159",
-    "squidoodly",
-    "seasnail"
+    "Vbu_"
   ],
   "contact": {
     "homepage": "https://meteorclient.com",
@@ -16,7 +14,7 @@
     "discord": "https://meteorclient.com/discord"
   },
   "license": "GPL-3.0",
-  "icon": "assets/meteor-client/icon.png",
+  "icon": "assets/under-ware/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -24,16 +22,16 @@
     ]
   },
   "mixins": [
-    "meteor-client.mixins.json",
-    "meteor-client-baritone.mixins.json",
-    "meteor-client-indigo.mixins.json",
-    "meteor-client-sodium.mixins.json",
-    "meteor-client-canvas.mixins.json"
+    "under-ware.mixins.json",
+    "under-ware-baritone.mixins.json",
+    "under-ware-indigo.mixins.json",
+    "under-ware-sodium.mixins.json",
+    "under-ware-canvas.mixins.json"
   ],
-  "accessWidener": "meteor-client.accesswidener",
+  "accessWidener": "under-ware.accesswidener",
   "custom": {
-    "meteor-client:devbuild": "${devbuild}",
-    "meteor-client:color": "145,61,226",
+    "under-ware:devbuild": "${devbuild}",
+    "under-ware:color": "145,61,226",
     "modmenu": {
       "links": {
         "modmenu.discord": "https://meteorclient.com/discord"

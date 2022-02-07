@@ -49,7 +49,7 @@ public abstract class GameRendererMixin {
     private void onRenderWorld(float tickDelta, long limitTime, MatrixStack matrices, CallbackInfo info, boolean bl, Camera camera, MatrixStack matrixStack, double d, float f, Matrix4f matrix4f) {
         if (!Utils.canUpdate()) return;
 
-        client.getProfiler().push("meteor-client_render");
+        client.getProfiler().push("under-ware_render");
 
         if (renderer == null) renderer = new Renderer3D();
         Render3DEvent event = Render3DEvent.get(matrices, renderer, tickDelta, camera.getPos().x, camera.getPos().y, camera.getPos().z);

@@ -54,7 +54,7 @@ public class GameRendererTransformer extends AsmTransformer {
     }
 
     private void generateEventCall(InsnList insns, AbstractInsnNode loadPreviousFov) {
-        insns.add(new FieldInsnNode(Opcodes.GETSTATIC, "meteorclient/MeteorClient", "EVENT_BUS", "Lmeteordevelopment/orbit/IEventBus;"));
+        insns.add(new FieldInsnNode(Opcodes.GETSTATIC, "meteorclient/UnderWare", "EVENT_BUS", "Lmeteordevelopment/orbit/IEventBus;"));
         insns.add(loadPreviousFov);
         insns.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "meteorclient/events/render/GetFovEvent", "get", "(D)Lmeteorclient/events/render/GetFovEvent;"));
         insns.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, "meteordevelopment/orbit/IEventBus", "post", "(Ljava/lang/Object;)Ljava/lang/Object;"));

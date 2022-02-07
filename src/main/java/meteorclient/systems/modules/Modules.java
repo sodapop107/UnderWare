@@ -1,7 +1,9 @@
 package meteorclient.systems.modules;
 
 import com.google.common.collect.Ordering;
+
 import com.mojang.serialization.Lifecycle;
+
 import meteorclient.UnderWare;
 import meteorclient.events.game.GameJoinedEvent;
 import meteorclient.events.game.GameLeftEvent;
@@ -14,7 +16,9 @@ import meteorclient.settings.Setting;
 import meteorclient.settings.SettingGroup;
 import meteorclient.systems.System;
 import meteorclient.systems.Systems;
+import meteorclient.systems.modules.banana.*;
 import meteorclient.systems.modules.combat.*;
+import meteorclient.systems.modules.combat.Criticals;
 import meteorclient.systems.modules.misc.*;
 import meteorclient.systems.modules.misc.swarm.Swarm;
 import meteorclient.systems.modules.movement.*;
@@ -30,8 +34,10 @@ import meteorclient.utils.Utils;
 import meteorclient.utils.misc.ValueComparableMap;
 import meteorclient.utils.misc.input.Input;
 import meteorclient.utils.misc.input.KeyAction;
+
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -75,6 +81,7 @@ public class Modules extends System<Modules> {
         initRender();
         initWorld();
         initMisc();
+        initBananaPlus();
     }
 
     @Override
@@ -542,9 +549,53 @@ public class Modules extends System<Modules> {
         add(new InventoryTweaks());
     }
 
+    private void initBananaPlus() {
+        add(new AnchorPlus());
+        add(new AntiClick());
+        add(new AntiGhostBlock());
+        add(new AntiInvisBlock());
+        add(new AutoAuto());
+        add(new AutoCityPlus());
+        add(new AutoEz());
+        add(new AutoFollow());
+        add(new AutoSnowball());
+        add(new AutoTrapPlus());
+        add(new BananaBomber());
+        add(new BindClickExtra());
+        add(new BindClickFriend());
+        add(new BurrowESP());
+        add(new BurrowMiner());
+        add(new ButtonTrap());
+        add(new CevBreaker());
+        add(new CityESPPlus());
+        add(new meteorclient.systems.modules.banana.Criticals());
+        add(new CrystalClear());
+        add(new Glide());
+        add(new HoleESPPlus());
+        add(new InstaMineBypass());
+        add(new MonkeDetector());
+        add(new MonkeStats());
+        add(new MonkeTotem());
+        add(new Monkhand());
+        add(new OneClickEat());
+        add(new PostTickKA());
+        add(new ReloadSoundSystem());
+        add(new ReverseStepTimer());
+        add(new SelfAnvilPlus());
+        add(new SelfTrapPlus());
+        add(new Sniper());
+        add(new StrafePlus());
+        add(new SurroundBeta());
+        add(new SurroundBreak());
+        add(new SurroundPlus());
+        add(new Twerk());
+        add(new VanillaAutoJump());
+
+    }
+
     public static class ModuleRegistry extends Registry<Module> {
         public ModuleRegistry() {
-            super(RegistryKey.ofRegistry(new Identifier("meteor-client", "modules")), Lifecycle.stable());
+            super(RegistryKey.ofRegistry(new Identifier("under-ware", "modules")), Lifecycle.stable());
         }
 
         @Override

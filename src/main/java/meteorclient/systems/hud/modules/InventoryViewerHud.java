@@ -12,8 +12,8 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
 public class InventoryViewerHud extends HudElement {
-    private static final Identifier TEXTURE = new Identifier("meteor-client", "textures/container.png");
-    private static final Identifier TEXTURE_TRANSPARENT = new Identifier("meteor-client", "textures/container-transparent.png");
+    private static final Identifier TEXTURE = new Identifier("under-waret", "textures/container.png");
+    private static final Identifier TEXTURE_TRANSPARENT = new Identifier("under-ware", "textures/container-transparent.png");
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 

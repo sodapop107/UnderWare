@@ -17,6 +17,7 @@ import meteorclient.systems.modules.misc.DiscordPresence;
 import meteorclient.utils.Init;
 import meteorclient.utils.InitStage;
 import meteorclient.utils.Utils;
+import meteorclient.utils.misc.BDamageUtils;
 import meteorclient.utils.misc.Version;
 import meteorclient.utils.misc.input.KeyAction;
 import meteorclient.utils.misc.input.KeyBinds;
@@ -43,7 +44,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class UnderWare implements ClientModInitializer {
-    public static final String MOD_ID = "meteor-client";
+    public static final String MOD_ID = "under-ware";
     private static final ModMetadata MOD_META = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata();
     public final static Version VERSION;
     public final static String DEV_BUILD;
@@ -91,6 +92,8 @@ public class UnderWare implements ClientModInitializer {
 
         AddonManager.ADDONS.forEach(MeteorAddon::onInitialize);
         Modules.get().sortModules();
+
+        BDamageUtils.init();
 
         // Load saves
         Systems.load();
@@ -187,6 +190,6 @@ public class UnderWare implements ClientModInitializer {
         if (versionString.contains("-")) versionString = versionString.split("-")[0];
 
         VERSION = new Version(versionString);
-        DEV_BUILD = MOD_META.getCustomValue("meteor-client:devbuild").getAsString();
+        DEV_BUILD = MOD_META.getCustomValue("under-ware:devbuild").getAsString();
     }
 }

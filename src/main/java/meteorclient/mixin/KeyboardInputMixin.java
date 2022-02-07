@@ -2,8 +2,10 @@ package meteorclient.mixin;
 
 import meteorclient.systems.modules.Modules;
 import meteorclient.systems.modules.movement.Sneak;
+
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

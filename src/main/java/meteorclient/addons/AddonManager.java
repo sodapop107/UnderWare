@@ -23,11 +23,11 @@ public class AddonManager {
                 public void onInitialize() {}
             };
 
-            ModMetadata metadata = FabricLoader.getInstance().getModContainer("meteor-client").get().getMetadata();
+            ModMetadata metadata = FabricLoader.getInstance().getModContainer("under-ware").get().getMetadata();
 
             METEOR.name = metadata.getName();
             METEOR.authors = new String[metadata.getAuthors().size()];
-            if (metadata.containsCustomValue("meteor-client:color")) METEOR.color.parse(metadata.getCustomValue("meteor-client:color").getAsString());
+            if (metadata.containsCustomValue("under-ware:color")) METEOR.color.parse(metadata.getCustomValue("under-ware:color").getAsString());
 
             int i = 0;
             for (Person author : metadata.getAuthors()) {
@@ -36,13 +36,13 @@ public class AddonManager {
         }
 
         // Addons
-        for (EntrypointContainer<MeteorAddon> entrypoint : FabricLoader.getInstance().getEntrypointContainers("meteor", MeteorAddon.class)) {
+        for (EntrypointContainer<MeteorAddon> entrypoint : FabricLoader.getInstance().getEntrypointContainers("under", MeteorAddon.class)) {
             ModMetadata metadata = entrypoint.getProvider().getMetadata();
             MeteorAddon addon = entrypoint.getEntrypoint();
 
             addon.name = metadata.getName();
             addon.authors = new String[metadata.getAuthors().size()];
-            if (metadata.containsCustomValue("meteor-client:color")) addon.color.parse(metadata.getCustomValue("meteor-client:color").getAsString());
+            if (metadata.containsCustomValue("under-ware:color")) addon.color.parse(metadata.getCustomValue("under-ware:color").getAsString());
 
             int i = 0;
             for (Person author : metadata.getAuthors()) {

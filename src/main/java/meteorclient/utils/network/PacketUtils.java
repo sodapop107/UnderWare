@@ -367,7 +367,7 @@ public class PacketUtils {
 
     private static class PacketRegistry extends Registry<Class<? extends Packet<?>>> {
         public PacketRegistry() {
-            super(RegistryKey.ofRegistry(new Identifier("meteor-client", "packets")), Lifecycle.stable());
+            super(RegistryKey.ofRegistry(new Identifier("under-ware", "packets")), Lifecycle.stable());
         }
 
         @Override

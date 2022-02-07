@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ReloadableResourceManagerImplMixin {
     @Inject(method = "getResource", at = @At("HEAD"), cancellable = true)
     private void onGetResource(Identifier id, CallbackInfoReturnable<Resource> info) {
-        if (id.getNamespace().equals("meteor-client")) {
-            info.setReturnValue(new ResourceImpl("meteor-client", id, UnderWare.class.getResourceAsStream("/assets/meteor-client/" + id.getPath()), null));
+        if (id.getNamespace().equals("under-ware")) {
+            info.setReturnValue(new ResourceImpl("under-ware", id, UnderWare.class.getResourceAsStream("/assets/under-ware/" + id.getPath()), null));
         }
     }
 }

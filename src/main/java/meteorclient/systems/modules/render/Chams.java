@@ -202,7 +202,7 @@ public class Chams extends Module {
         .build()
     );
 
-    public static final Identifier BLANK = new Identifier("meteor-client", "textures/blank.png");
+    public static final Identifier BLANK = new Identifier("under-ware", "textures/blank.png");
 
     public Chams() {
         super(Categories.Render, "chams", "Tweaks rendering of entities.");

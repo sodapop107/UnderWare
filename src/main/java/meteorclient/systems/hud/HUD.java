@@ -7,12 +7,15 @@ import meteorclient.settings.*;
 import meteorclient.systems.System;
 import meteorclient.systems.Systems;
 import meteorclient.systems.hud.modules.*;
+import meteorclient.systems.hud.modules.stats.*;
 import meteorclient.utils.misc.Keybind;
 import meteorclient.utils.misc.NbtUtils;
 import meteorclient.utils.render.AlignmentX;
 import meteorclient.utils.render.AlignmentY;
 import meteorclient.utils.render.color.SettingColor;
+
 import meteordevelopment.orbit.EventHandler;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -115,6 +118,10 @@ public class HUD extends System<HUD> {
         // Top Right
         topRight = new HudElementLayer(RENDERER, elements, AlignmentX.Right, AlignmentY.Top, 2, 2);
         topRight.add(new ActiveModulesHud(this));
+        topRight.add(new Deaths(this));
+        topRight.add(new KD(this));
+        topRight.add(new Kills(this));
+        topRight.add(new KillStreak(this));
 
 
         // Bottom Left

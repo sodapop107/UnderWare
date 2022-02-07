@@ -28,11 +28,10 @@ public class SplashTextResourceSupplierMixin {
 
     private static List<String> getMeteorSplashes() {
         return Arrays.asList(
-                "Meteor on Crack!",
+                "UnderWare on Crack!",
                 "Star UnderWare on GitHub!",
                 "Based utility mod.",
-                "§6MineGame159 §fbased god",
-                "§4meteorclient.com",
+                "§6Vbu_ §fbased god",
                 "§4Meteor on Crack!",
                 "§6Meteor on Crack!"
         );

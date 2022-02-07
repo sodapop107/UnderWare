@@ -15,7 +15,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
 public class ContainerViewerHud extends HudElement {
-    private static final Identifier TEXTURE = new Identifier("meteor-client", "textures/container.png");
+    private static final Identifier TEXTURE = new Identifier("under-ware", "textures/container.png");
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
