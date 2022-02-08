@@ -32,8 +32,8 @@ public class SplashTextResourceSupplierMixin {
                 "Star UnderWare on GitHub!",
                 "Based utility mod.",
                 "§6Vbu_ §fbased god",
-                "§4Meteor on Crack!",
-                "§6Meteor on Crack!"
+                "§4UnderWare on Crack!",
+                "§6UnderWare on Crack!"
         );
     }
 
