@@ -9,8 +9,8 @@ import net.minecraft.command.CommandSource;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
-public class SoftLeave extends Command {
-    public SoftLeave() {
+public class SoftLeaveCommand extends Command {
+    public SoftLeaveCommand() {
         super("soft-leave", "Returns to the menu without disconnecting from the server.");
     }
 

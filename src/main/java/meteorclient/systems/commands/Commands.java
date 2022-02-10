@@ -65,7 +65,8 @@ public class Commands extends System<Commands> {
         add(new RotationCommand());
         add(new WaypointCommand());
         add(new MusicCommand());
-        add(new SoftLeave());
+        add(new SoftLeaveCommand());
+        add(new SettingCommand());
 
         commands.sort(Comparator.comparing(Command::getName));
     }
