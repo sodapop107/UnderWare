@@ -16,20 +16,24 @@ import meteorclient.settings.Setting;
 import meteorclient.settings.SettingGroup;
 import meteorclient.systems.System;
 import meteorclient.systems.Systems;
-import meteorclient.systems.modules.banana.*;
-import meteorclient.systems.modules.combat.*;
 import meteorclient.systems.modules.combat.Criticals;
-import meteorclient.systems.modules.misc.*;
 import meteorclient.systems.modules.misc.swarm.Swarm;
+
+import meteorclient.systems.modules.combat.*;
+import meteorclient.systems.modules.misc.*;
 import meteorclient.systems.modules.movement.*;
 import meteorclient.systems.modules.movement.elytrafly.ElytraFly;
 import meteorclient.systems.modules.movement.speed.Speed;
 import meteorclient.systems.modules.player.*;
 import meteorclient.systems.modules.render.*;
+import meteorclient.systems.modules.world.*;
+import meteorclient.systems.modules.banana.*;
+import meteorclient.systems.modules.chat.*;
+
 import meteorclient.systems.modules.render.marker.Marker;
 import meteorclient.systems.modules.render.search.Search;
 import meteorclient.systems.modules.world.Timer;
-import meteorclient.systems.modules.world.*;
+
 import meteorclient.utils.Utils;
 import meteorclient.utils.misc.ValueComparableMap;
 import meteorclient.utils.misc.input.Input;
@@ -77,6 +81,7 @@ public class Modules extends System<Modules> {
     public void init() {
         initCombat();
         initPlayer();
+        initChat();
         initMovement();
         initRender();
         initWorld();
@@ -547,6 +552,7 @@ public class Modules extends System<Modules> {
         add(new Spam());
         add(new VanillaSpoof());
         add(new InventoryTweaks());
+        add(new AutoBedCraft());
     }
 
     private void initBananaPlus() {
@@ -591,6 +597,11 @@ public class Modules extends System<Modules> {
         add(new Twerk());
         add(new VanillaAutoJump());
 
+    }
+
+    private void initChat() {
+        add(new BurrowAlert());
+        add(new PopCounter());
     }
 
     public static class ModuleRegistry extends Registry<Module> {
