@@ -19,6 +19,7 @@ public class Tabs {
         add(new FriendsTab());
         add(new MacrosTab());
         add(new ProfilesTab());
+        add(new MusicTab());
         add(new BaritoneTab());
     }
 

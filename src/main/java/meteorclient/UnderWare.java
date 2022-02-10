@@ -22,17 +22,22 @@ import meteorclient.utils.misc.Version;
 import meteorclient.utils.misc.input.KeyAction;
 import meteorclient.utils.misc.input.KeyBinds;
 import meteorclient.utils.network.OnlinePlayers;
+import meteorclient.music.Music;
+
 import meteordevelopment.orbit.EventBus;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 import meteordevelopment.orbit.IEventBus;
+
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
@@ -53,6 +58,8 @@ public class UnderWare implements ClientModInitializer {
     public static UnderWare INSTANCE;
     public static final IEventBus EVENT_BUS = new EventBus();
     public static final File FOLDER = new File(FabricLoader.getInstance().getGameDir().toString(), MOD_ID);
+    public static final File MUSIC_FOLDER = new File(FOLDER + "/Music");
+
     public static final Logger LOG = LogManager.getLogger();
 
     @Override
@@ -94,6 +101,7 @@ public class UnderWare implements ClientModInitializer {
         Modules.get().sortModules();
 
         BDamageUtils.init();
+        Music.init();
 
         // Load saves
         Systems.load();
@@ -114,6 +122,8 @@ public class UnderWare implements ClientModInitializer {
         if (mc.currentScreen == null && mc.getOverlay() == null && KeyBinds.OPEN_COMMANDS.wasPressed()) {
             mc.setScreen(new ChatScreen(Config.get().prefix.get()));
         }
+        if (Music.player == null) return;
+        if (Music.player.getVolume() != Config.get().musicVolume.get()) Music.player.setVolume(Config.get().musicVolume.get());
     }
 
     @EventHandler
@@ -129,6 +139,7 @@ public class UnderWare implements ClientModInitializer {
             openGui();
         }
     }
+
 
     private void openGui() {
         if (Utils.canOpenGui()) Tabs.get().get(0).openScreen(GuiThemes.get());

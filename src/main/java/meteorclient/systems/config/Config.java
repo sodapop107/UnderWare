@@ -21,6 +21,7 @@ public class Config extends System<Config> {
     private final SettingGroup sgVisual = settings.createGroup("Visual");
     private final SettingGroup sgChat = settings.createGroup("Chat");
     private final SettingGroup sgMisc = settings.createGroup("Misc");
+    private final SettingGroup sgMusic = settings.createGroup("Music");
 
     // Visual
 
@@ -103,6 +104,17 @@ public class Config extends System<Config> {
         .description("Delete previous matching chat feedback to keep chat clear.")
         .visible(chatFeedback::get)
         .defaultValue(true)
+        .build()
+    );
+
+    // Music
+
+    public final Setting<Integer> musicVolume = sgMusic.add(new IntSetting.Builder()
+        .name("volume")
+        .description("Determines the volume of the currently played music.")
+        .defaultValue(100)
+        .min(1)
+        .sliderRange(1, 250)
         .build()
     );
 

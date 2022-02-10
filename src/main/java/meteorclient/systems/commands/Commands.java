@@ -64,6 +64,7 @@ public class Commands extends System<Commands> {
         add(new FOVCommand());
         add(new RotationCommand());
         add(new WaypointCommand());
+        add(new MusicCommand());
 
         commands.sort(Comparator.comparing(Command::getName));
     }
