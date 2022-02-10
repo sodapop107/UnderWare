@@ -503,6 +503,7 @@ public class Modules extends System<Modules> {
         add(new Blur());
         add(new PopChams());
         add(new RideStats());
+        add(new Confetti());
     }
 
     private void initWorld() {
@@ -555,6 +556,7 @@ public class Modules extends System<Modules> {
         add(new InventoryTweaks());
         add(new AutoBedCraft());
         add(new TpsSync());
+        add(new PauseOnUnloadedChunk());
     }
 
     private void initBananaPlus() {

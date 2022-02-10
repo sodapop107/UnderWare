@@ -4,9 +4,11 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+
 import meteorclient.systems.config.Config;
 import meteorclient.utils.Utils;
 import meteorclient.utils.player.ChatUtils;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
