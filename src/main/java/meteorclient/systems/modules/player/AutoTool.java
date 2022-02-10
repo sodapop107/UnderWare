@@ -10,8 +10,10 @@ import meteorclient.systems.modules.Modules;
 import meteorclient.systems.modules.world.InfinityMiner;
 import meteorclient.utils.player.InvUtils;
 import meteorclient.utils.world.BlockUtils;
+
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -24,6 +26,21 @@ import java.util.function.Predicate;
 
 public class AutoTool extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
+
+    private final Setting<Boolean> inventory = sgGeneral.add(new BoolSetting.Builder()
+        .name("inventory")
+        .description("Whether to use tools from you inventory.")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<Boolean> hotbarFirst = sgGeneral.add(new BoolSetting.Builder()
+        .name("hotbar-first")
+        .description("Whether or not to prefer using tools from the hotbar over tools from your inventory.")
+        .defaultValue(true)
+        .visible(() -> inventory.get())
+        .build()
+    );
 
     private final Setting<EnchantPreference> prefer = sgGeneral.add(new EnumSetting.Builder<EnchantPreference>()
         .name("prefer")
@@ -74,6 +91,9 @@ public class AutoTool extends Module {
     private boolean shouldSwitch;
     private int ticks;
     private int bestSlot;
+    private int previousToolSlot;
+    private int previousSelectedSlot;
+    private int newToolSlot;
 
     public AutoTool() {
         super(Categories.Player, "auto-tool", "Automatically switches to the most effective tool when performing an action.");
@@ -83,10 +103,23 @@ public class AutoTool extends Module {
     private void onTick(TickEvent.Post event) {
         if (Modules.get().isActive(InfinityMiner.class)) return;
 
-        if (switchBack.get() && !mc.options.keyAttack.isPressed() && wasPressed && InvUtils.previousSlot != -1) {
-            InvUtils.swapBack();
+        if (switchBack.get() && !mc.options.keyAttack.isPressed() && wasPressed && previousToolSlot > 8) {
+            assert mc.player != null;
+            InvUtils.move().fromHotbar(newToolSlot).to(previousToolSlot);
+            if(previousSelectedSlot != -1) mc.player.getInventory().selectedSlot = previousSelectedSlot;
+            previousToolSlot = -1;
+            previousSelectedSlot = -1;
             wasPressed = false;
             return;
+        } else if(switchBack.get() && !mc.options.keyAttack.isPressed() && wasPressed && InvUtils.previousSlot != -1) {
+            InvUtils.swapBack();
+            previousToolSlot = -1;
+            previousSelectedSlot = -1;
+            wasPressed = false;
+            return;
+        } else if (!switchBack.get() && previousToolSlot > 8) {
+            previousSelectedSlot = -1;
+            previousToolSlot = -1;
         }
 
         if (ticks <= 0 && shouldSwitch && bestSlot != -1) {
@@ -113,21 +146,43 @@ public class AutoTool extends Module {
         double bestScore = -1;
         bestSlot = -1;
 
-        for (int i = 0; i < 9; i++) {
+        boolean inHotbar = false;
+
+        for (int i = 0; i < 36; i++) {
             double score = getScore(mc.player.getInventory().getStack(i), blockState, silkTouchForEnderChest.get(), prefer.get(), itemStack -> !shouldStopUsing(itemStack));
             if (score < 0) continue;
 
             if (score > bestScore) {
-                bestScore = score;
-                bestSlot = i;
+                if(!inHotbar || i < 9 || mc.player.getInventory().getStack(i).getItem() != mc.player.getInventory().getStack(bestSlot).getItem()) {
+                    bestScore = score;
+                    bestSlot = i;
+                    if (i < 9) {
+                        inHotbar = true;
+                    }
+                } else if(!hotbarFirst.get()) {
+                    bestScore = score;
+                    bestSlot = i;
+                }
             }
         }
 
         if ((bestSlot != -1 && (bestScore > getScore(currentStack, blockState, silkTouchForEnderChest.get(), prefer.get(), itemStack -> !shouldStopUsing(itemStack))) || shouldStopUsing(currentStack) || !isTool(currentStack))) {
             ticks = switchDelay.get();
+            if(inventory.get() && bestSlot > 8) {
+                if(InvUtils.findEmpty().isHotbar()) {
+                    previousSelectedSlot = mc.player.getInventory().selectedSlot;
+                    mc.player.getInventory().selectedSlot = mc.player.getInventory().getSwappableHotbarSlot();
+                    InvUtils.move().from(bestSlot).to(mc.player.getInventory().getSwappableHotbarSlot());
+                } else {
+                    InvUtils.move().from(bestSlot).toHotbar(mc.player.getInventory().selectedSlot);
+                }
+                previousToolSlot = bestSlot;
+                newToolSlot = mc.player.getInventory().selectedSlot;
 
-            if (ticks == 0) InvUtils.swap(bestSlot, true);
-            else shouldSwitch = true;
+            } else {
+                if (ticks == 0) InvUtils.swap(bestSlot, true);
+                else shouldSwitch = true;
+            }
         }
 
         // Anti break

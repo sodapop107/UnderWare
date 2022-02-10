@@ -13,7 +13,9 @@ import meteorclient.utils.player.PlayerUtils;
 import meteorclient.utils.render.color.Color;
 import meteorclient.utils.render.color.SettingColor;
 import meteorclient.utils.world.BlockUtils;
+
 import meteordevelopment.orbit.EventHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.item.BlockItem;
@@ -74,7 +76,7 @@ public class Scaffold extends Module {
     private final Setting<Boolean> airPlace = sgGeneral.add(new BoolSetting.Builder()
         .name("air-place")
         .description("Allow air place.")
-        .defaultValue(false)
+        .defaultValue(true)
         .build()
     );
 
@@ -87,6 +89,35 @@ public class Scaffold extends Module {
         .visible(() -> !airPlace.get())
         .build()
     );
+
+    private final Setting<Boolean> onSurface = sgGeneral.add(new BoolSetting.Builder()
+        .name("on-surface")
+        .description("Places horizontal and vertical blocks when already standing on a block.")
+        .defaultValue(true)
+        .build()
+    );
+
+    private final Setting<Integer> horizontalRadius = sgGeneral.add(new IntSetting.Builder()
+        .name("horizontal-radius")
+        .description("How far scaffold should place blocks horizontally.")
+        .defaultValue(1)
+        .min(1)
+        .sliderMin(1)
+        .sliderMax(8)
+        .build()
+    );
+
+    private final Setting<Integer> verticalRadius = sgGeneral.add(new IntSetting.Builder()
+        .name("vertical-radius")
+        .description("How far scaffold should place blocks vertically.")
+        .defaultValue(1)
+        .min(1)
+        .sliderMin(1)
+        .sliderMax(8)
+        .build()
+    );
+
+
 
     // Render
 
@@ -120,14 +151,19 @@ public class Scaffold extends Module {
     private boolean lastWasSneaking;
     private double lastSneakingY;
 
+
     public Scaffold() {
         super(Categories.Movement, "scaffold", "Automatically places blocks under you.");
     }
 
     @Override
     public void onActivate() {
+
         lastWasSneaking = mc.options.keySneak.isPressed();
-        if (lastWasSneaking) lastSneakingY = mc.player.getY();
+        if (lastWasSneaking) {
+            assert mc.player != null;
+            lastSneakingY = mc.player.getY();
+        }
 
         for (RenderBlock renderBlock : renderBlocks) renderBlockPool.free(renderBlock);
         renderBlocks.clear();
@@ -141,15 +177,18 @@ public class Scaffold extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Pre event) {
+
         // Ticking fade animation
         renderBlocks.forEach(RenderBlock::tick);
         renderBlocks.removeIf(renderBlock -> renderBlock.ticks <= 0);
 
         if (airPlace.get()) {
+            assert mc.player != null;
             Vec3d vec = mc.player.getPos().add(mc.player.getVelocity()).add(0, -0.5f, 0);
             bp.set(vec.getX(), vec.getY(), vec.getZ());
 
         } else {
+            assert mc.player != null;
             if (BlockUtils.getPlaceSide(mc.player.getBlockPos().down()) != null) {
                 bp.set(mc.player.getBlockPos().down());
 
@@ -163,6 +202,7 @@ public class Scaffold extends Module {
 
                     for (int x = (int) (mc.player.getX() - placeRange.get()); x < mc.player.getX() + placeRange.get(); x++) {
                         for (int z = (int) (mc.player.getZ() - placeRange.get()); z < mc.player.getZ() + placeRange.get(); z++) {
+                            assert mc.world != null;
                             for (int y = (int) Math.max(mc.world.getBottomY(), mc.player.getY() - placeRange.get()); y < Math.min(mc.world.getTopY(), mc.player.getY() + placeRange.get()); y++) {
                                 bp.set(x, y, z);
                                 if (!mc.world.getBlockState(bp).isAir()) blockPosArray.add(new BlockPos(bp));
@@ -214,17 +254,28 @@ public class Scaffold extends Module {
         if (mc.options.keyJump.isPressed() && !mc.options.keySneak.isPressed() && fastTower.get()) {
             mc.player.setVelocity(0, 0.42f, 0);
         }
-
         if (BlockUtils.place(bp, item, rotate.get(), 50, renderSwing.get(), true)) {
+
+            if (horizontalRadius.get() > 1 || verticalRadius.get() > 1) {
+                horizontalAndVertical(bp, item);
+            }
+
+
             // Render block if was placed
             renderBlocks.add(renderBlockPool.get().set(bp));
 
             // Move player down so they are on top of the placed block ready to jump again
-            if (mc.options.keyJump.isPressed() && !mc.options.keySneak.isPressed() && !mc.player.isOnGround() && !mc.world.getBlockState(bp).isAir() && fastTower.get()) {
-                mc.player.setVelocity(0, -0.28f, 0);
+            if (mc.options.keyJump.isPressed() && !mc.options.keySneak.isPressed() && !mc.player.isOnGround()) {
+                assert mc.world != null;
+                if (!mc.world.getBlockState(bp).isAir() && fastTower.get()) {
+                    mc.player.setVelocity(0, -0.28f, 0);
+                }
             }
+        } else if(onSurface.get()){
+            horizontalAndVertical(new BlockPos.Mutable(mc.player.getX(), mc.player.getY() - 1, mc.player.getZ()), item);
         }
 
+        assert mc.world != null;
         if (!mc.world.getBlockState(bp).isAir()) {
             prevBp.set(bp);
         }
@@ -239,7 +290,67 @@ public class Scaffold extends Module {
         else if (blocksFilter.get() == ListMode.Whitelist && !blocks.get().contains(block)) return false;
 
         if (!Block.isShapeFullCube(block.getDefaultState().getCollisionShape(mc.world, pos))) return false;
-        return !(block instanceof FallingBlock) || !FallingBlock.canFallThrough(mc.world.getBlockState(pos));
+        if (!(block instanceof FallingBlock)) return true;
+        assert mc.world != null;
+        return !FallingBlock.canFallThrough(mc.world.getBlockState(pos));
+    }
+
+    //Place horizontal and vertical blocks
+    private void horizontalAndVertical(BlockPos.Mutable bp, FindItemResult item) {
+
+        if(verticalRadius.get() > 1) {
+            for (int i = 1; i < verticalRadius.get(); i++) {
+                if (BlockUtils.place(bp.add(0, -i, 0), item, rotate.get(), 50, renderSwing.get(), true)) {
+                    renderBlocks.add(renderBlockPool.get().set(bp.add(0, -i, 0)));
+                }
+            }
+        }
+        if(horizontalRadius.get() > 1) {
+
+            for (int v = 0; v < verticalRadius.get(); v++) {
+                for (int h = 1; h < horizontalRadius.get(); h++) {
+                    for (int d = -h + 1; d <= h - 1; d++) {
+                        //Front
+                        if (BlockUtils.place(bp.add(h, -v, d), item, rotate.get(), 50, renderSwing.get(), true)) {
+                            renderBlocks.add(renderBlockPool.get().set(bp.add(h, -v, d)));
+                        }
+                        //Back
+                        if (BlockUtils.place(bp.add(-h, -v, d), item, rotate.get(), 50, renderSwing.get(), true)) {
+                            renderBlocks.add(renderBlockPool.get().set(bp.add(-h, -v, d)));
+                        }
+
+                        //Left
+                        if (BlockUtils.place(bp.add(d, -v, h), item, rotate.get(), 50, renderSwing.get(), true)) {
+                            renderBlocks.add(renderBlockPool.get().set(bp.add(d, -v, h)));
+                        }
+
+                        //Right
+                        if (BlockUtils.place(bp.add(d, -v, -h), item, rotate.get(), 50, renderSwing.get(), true)) {
+                            renderBlocks.add(renderBlockPool.get().set(bp.add(d, -v, -h)));
+                        }
+
+                    }
+                    //Diagonals
+                    if (BlockUtils.place(bp.add(h, -v, -h), item, rotate.get(), 50, renderSwing.get(), true)) {
+                        renderBlocks.add(renderBlockPool.get().set(bp.add(h, -v, -h)));
+                    }
+
+                    if (BlockUtils.place(bp.add(-h, -v, h), item, rotate.get(), 50, renderSwing.get(), true)) {
+                        renderBlocks.add(renderBlockPool.get().set(bp.add(-h, -v, h)));
+                    }
+
+                    if (BlockUtils.place(bp.add(h, -v, h), item, rotate.get(), 50, renderSwing.get(), true)) {
+                        renderBlocks.add(renderBlockPool.get().set(bp.add(h, -v, h)));
+                    }
+
+                    if (BlockUtils.place(bp.add(-h, -v, -h), item, rotate.get(), 50, renderSwing.get(), true)) {
+                        renderBlocks.add(renderBlockPool.get().set(bp.add(-h, -v, -h)));
+                    }
+
+                }
+            }
+        }
+
     }
 
     @EventHandler

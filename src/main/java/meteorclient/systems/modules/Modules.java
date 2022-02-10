@@ -502,6 +502,7 @@ public class Modules extends System<Modules> {
         add(new Zoom());
         add(new Blur());
         add(new PopChams());
+        add(new RideStats());
     }
 
     private void initWorld() {
@@ -553,6 +554,7 @@ public class Modules extends System<Modules> {
         add(new VanillaSpoof());
         add(new InventoryTweaks());
         add(new AutoBedCraft());
+        add(new TpsSync());
     }
 
     private void initBananaPlus() {
@@ -602,6 +604,7 @@ public class Modules extends System<Modules> {
     private void initChat() {
         add(new BurrowAlert());
         add(new PopCounter());
+        add(new GroupMessage());
     }
 
     public static class ModuleRegistry extends Registry<Module> {
