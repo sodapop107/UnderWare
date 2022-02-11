@@ -2,8 +2,7 @@ package meteorclient.systems.modules.misc;
 
 //Created by squidoodly
 
-import meteordevelopment.DiscordIPC;
-import meteordevelopment.RichPresence;
+
 import meteorclient.UnderWare;
 import meteorclient.events.game.OpenScreenEvent;
 import meteorclient.events.world.TickEvent;
@@ -17,11 +16,15 @@ import meteorclient.systems.modules.Module;
 import meteorclient.utils.Utils;
 import meteorclient.utils.misc.MeteorStarscript;
 import meteorclient.utils.player.ChatUtils;
+import meteorclient.utils.rpc.RichPresence;
+import meteorclient.utils.rpc.DiscordIPC;
+
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.starscript.Script;
 import meteordevelopment.starscript.compiler.Compiler;
 import meteordevelopment.starscript.compiler.Parser;
 import meteordevelopment.starscript.utils.StarscriptError;
+
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.option.*;
@@ -98,7 +101,6 @@ public class DiscordPresence extends Module {
     );
 
     private static final RichPresence rpc = new RichPresence();
-    private SmallImage currentSmallImage;
     private int ticks;
     private boolean forceUpdate, lastWasInMainMenu;
 
@@ -109,22 +111,21 @@ public class DiscordPresence extends Module {
     private int line2Ticks, line2I;
 
     public DiscordPresence() {
-        super(Categories.Misc, "discord-presence", "Displays Meteor as your presence on Discord.");
+        super(Categories.Misc, "discord-presence", "Displays UnderWare as your presence on Discord.");
 
         runInMainMenu = true;
     }
 
     @Override
     public void onActivate() {
-        DiscordIPC.start(835240968533049424L, null);
+        DiscordIPC.start(941699018285776906L, null);
 
         rpc.setStart(System.currentTimeMillis() / 1000L);
 
         String largeText = "UnderWare " + UnderWare.VERSION;
         if (!UnderWare.DEV_BUILD.isEmpty()) largeText += " Dev Build: " + UnderWare.DEV_BUILD;
-        rpc.setLargeImage("meteor_client", largeText);
+        rpc.setLargeImage("underwarelogo", largeText);
 
-        currentSmallImage = SmallImage.Snail;
 
         recompileLine1();
         recompileLine2();
@@ -176,15 +177,6 @@ public class DiscordPresence extends Module {
         boolean update = false;
 
         // Image
-        if (ticks >= 200 || forceUpdate) {
-            currentSmallImage = currentSmallImage.next();
-            currentSmallImage.apply();
-            update = true;
-
-            ticks = 0;
-        }
-        else ticks++;
-
         if (Utils.canUpdate()) {
             // Line 1
             if (line1Ticks >= line1UpdateDelay.get() || forceUpdate) {
@@ -239,7 +231,7 @@ public class DiscordPresence extends Module {
                 else if (mc.currentScreen instanceof MultiplayerScreen) rpc.setState("Selecting server");
                 else if (mc.currentScreen instanceof AddServerScreen) rpc.setState("Adding server");
                 else if (mc.currentScreen instanceof ConnectScreen || mc.currentScreen instanceof DirectConnectScreen) rpc.setState("Connecting to server");
-                else if (mc.currentScreen instanceof WidgetScreen) rpc.setState("Browsing Meteor's GUI");
+                else if (mc.currentScreen instanceof WidgetScreen) rpc.setState("Browsing UnderWare's GUI");
                 else if (mc.currentScreen instanceof OptionsScreen || mc.currentScreen instanceof SkinOptionsScreen || mc.currentScreen instanceof SoundOptionsScreen || mc.currentScreen instanceof VideoOptionsScreen || mc.currentScreen instanceof ControlsOptionsScreen || mc.currentScreen instanceof LanguageOptionsScreen || mc.currentScreen instanceof ChatOptionsScreen || mc.currentScreen instanceof PackScreen || mc.currentScreen instanceof AccessibilityOptionsScreen) rpc.setState("Changing options");
                 else if (mc.currentScreen instanceof CreditsScreen) rpc.setState("Reading credits");
                 else if (mc.currentScreen instanceof RealmsScreen) rpc.setState("Browsing Realms");
@@ -272,26 +264,5 @@ public class DiscordPresence extends Module {
         help.action = () -> Util.getOperatingSystem().open("https://github.com/MeteorDevelopment/meteor-client/wiki/Starscript");
 
         return help;
-    }
-
-    private enum SmallImage {
-        MineGame("minegame", "MineGame159"),
-        Snail("seasnail", "seasnail8169");
-
-        private final String key, text;
-
-        SmallImage(String key, String text) {
-            this.key = key;
-            this.text = text;
-        }
-
-        void apply() {
-            rpc.setSmallImage(key, text);
-        }
-
-        SmallImage next() {
-            if (this == MineGame) return Snail;
-            return MineGame;
-        }
     }
 }

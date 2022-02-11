@@ -12,7 +12,7 @@ import meteorclient.systems.modules.Categories;
 import meteorclient.systems.modules.Module;
 import meteorclient.utils.Utils;
 import meteorclient.utils.misc.UnorderedArrayList;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import meteorclient.utils.player.PlayerUtils;
 import meteorclient.utils.render.color.RainbowColors;
 import meteorclient.utils.render.color.SettingColor;
@@ -152,7 +152,7 @@ public class Search extends Module {
     }
 
     private void searchChunk(Chunk chunk, ChunkDataEvent event) {
-        MeteorExecutor.execute(() -> {
+        UnderWareExecutor.execute(() -> {
             if (!isActive()) return;
             SChunk schunk = SChunk.searchChunk(chunk, blocks.get());
 
@@ -188,7 +188,7 @@ public class Search extends Module {
         boolean removed = !added && !blocks.get().contains(event.newState.getBlock()) && blocks.get().contains(event.oldState.getBlock());
 
         if (added || removed) {
-            MeteorExecutor.execute(() -> {
+            UnderWareExecutor.execute(() -> {
                 synchronized (chunks) {
                     SChunk chunk = chunks.get(key);
 
@@ -235,7 +235,7 @@ public class Search extends Module {
                 SChunk chunk = it.next();
 
                 if (chunk.shouldBeDeleted()) {
-                    MeteorExecutor.execute(() -> {
+                    UnderWareExecutor.execute(() -> {
                         for (SBlock block : chunk.blocks.values()) {
                             block.group.remove(block, false);
                             block.loaded = false;

@@ -4,7 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import meteorclient.utils.network.Http;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import net.minecraft.util.Util;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -105,7 +105,7 @@ public class MicrosoftLogin {
             server = HttpServer.create(new InetSocketAddress("127.0.0.1", PORT), 0);
 
             server.createContext("/", new Handler());
-            server.setExecutor(MeteorExecutor.executor);
+            server.setExecutor(UnderWareExecutor.executor);
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

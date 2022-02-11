@@ -11,7 +11,7 @@ import meteorclient.systems.accounts.Accounts;
 import meteorclient.systems.accounts.MicrosoftLogin;
 import meteorclient.systems.accounts.types.MicrosoftAccount;
 import meteorclient.utils.misc.NbtUtils;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import org.jetbrains.annotations.Nullable;
 
 import static meteorclient.UnderWare.mc;
@@ -57,7 +57,7 @@ public class AccountsScreen extends WindowScreen {
     public static void addAccount(@Nullable AddAccountScreen screen, AccountsScreen parent, Account<?> account) {
         if (screen != null) screen.locked = true;
 
-        MeteorExecutor.execute(() -> {
+        UnderWareExecutor.execute(() -> {
             if (account.fetchInfo() && account.fetchHead()) {
                 Accounts.get().add(account);
                 if (account.login()) Accounts.get().save();

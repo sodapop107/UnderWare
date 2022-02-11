@@ -1,6 +1,6 @@
 package meteorclient.systems.modules.misc.swarm;
 
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import meteorclient.utils.player.ChatUtils;
 
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class SwarmHost extends Thread {
     }
 
     public void sendMessage(String s) {
-        MeteorExecutor.execute(() -> {
+        UnderWareExecutor.execute(() -> {
             for (SwarmConnection connection : clientConnections) {
                 if (connection != null) {
                     connection.messageToSend = s;

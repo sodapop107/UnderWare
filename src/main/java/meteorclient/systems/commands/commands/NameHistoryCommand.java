@@ -6,7 +6,7 @@ import meteorclient.systems.commands.Command;
 import meteorclient.systems.commands.arguments.PlayerListEntryArgumentType;
 import meteorclient.utils.Utils;
 import meteorclient.utils.network.Http;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import meteorclient.utils.player.ChatUtils;
 import meteorclient.utils.player.PlayerUtils;
 import meteorclient.utils.render.color.Color;
@@ -34,7 +34,7 @@ public class NameHistoryCommand extends Command {
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
         builder.then(argument("player", PlayerListEntryArgumentType.playerListEntry()).executes(context -> {
-            MeteorExecutor.execute(() -> {
+            UnderWareExecutor.execute(() -> {
                 PlayerListEntry lookUpTarget = PlayerListEntryArgumentType.getPlayerListEntry(context);
                 UUID uuid = lookUpTarget.getProfile().getId();
 

@@ -6,7 +6,7 @@ import meteorclient.utils.InitStage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MeteorExecutor {
+public class UnderWareExecutor {
     public static ExecutorService executor;
 
     @Init(stage = InitStage.Pre)

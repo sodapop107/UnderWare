@@ -13,7 +13,7 @@ import meteorclient.systems.modules.Categories;
 import meteorclient.systems.modules.Module;
 import meteorclient.utils.misc.Vec3;
 import meteorclient.utils.network.Http;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import meteorclient.utils.render.NametagUtils;
 import meteorclient.utils.render.color.Color;
 import meteordevelopment.orbit.EventHandler;
@@ -115,7 +115,7 @@ public class EntityOwner extends Module {
         if (name != null) return name;
 
         // Makes a HTTP request to Mojang API
-        MeteorExecutor.execute(() -> {
+        UnderWareExecutor.execute(() -> {
             if (isActive()) {
                 List<UuidNameHistoryResponseItem> res = Http.get("https://api.mojang.com/user/profiles/" + uuid.toString().replace("-", "") + "/names").sendJson(RESPONSE_TYPE);
 

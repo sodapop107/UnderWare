@@ -38,7 +38,7 @@ public class Capes {
         TO_RETRY.clear();
         TO_REMOVE.clear();
 
-        MeteorExecutor.execute(() -> {
+        UnderWareExecutor.execute(() -> {
             // Cape owners
             Stream<String> lines = Http.get(CAPE_OWNERS_URL).sendLines();
             if (lines != null) lines.forEach(s -> {
@@ -124,7 +124,7 @@ public class Capes {
             if (downloaded || downloading || retryTimer > 0) return;
             downloading = true;
 
-            MeteorExecutor.execute(() -> {
+            UnderWareExecutor.execute(() -> {
                 try {
                     String url = URLS.get(name);
                     if (url == null) {

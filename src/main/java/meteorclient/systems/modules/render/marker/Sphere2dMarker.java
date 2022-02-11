@@ -4,7 +4,7 @@ import meteorclient.events.render.Render3DEvent;
 import meteorclient.renderer.ShapeMode;
 import meteorclient.settings.*;
 import meteorclient.utils.misc.Keybind;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import meteorclient.utils.player.PlayerUtils;
 import meteorclient.utils.render.color.SettingColor;
 import meteorclient.utils.world.Dir;
@@ -203,7 +203,7 @@ public class Sphere2dMarker extends BaseMarker {
         };
 
         if (radius.get() <= 50) action.run();
-        else MeteorExecutor.execute(action);
+        else UnderWareExecutor.execute(action);
     }
 
     private void add(int x, int y, int z) {

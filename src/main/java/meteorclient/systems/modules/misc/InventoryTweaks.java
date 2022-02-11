@@ -14,7 +14,7 @@ import meteorclient.systems.modules.Module;
 import meteorclient.utils.Utils;
 import meteorclient.utils.misc.Keybind;
 import meteorclient.utils.misc.input.KeyAction;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import meteorclient.utils.player.ChatUtils;
 import meteorclient.utils.player.InvUtils;
 import meteorclient.utils.player.InventorySorter;
@@ -268,12 +268,12 @@ public class InventoryTweaks extends Module {
     }
 
     public void steal(ScreenHandler handler) {
-        MeteorExecutor.execute(() -> moveSlots(handler, 0, getRows(handler) * 9));
+        UnderWareExecutor.execute(() -> moveSlots(handler, 0, getRows(handler) * 9));
     }
 
     public void dump(ScreenHandler handler) {
         int playerInvOffset = getRows(handler) * 9;
-        MeteorExecutor.execute(() -> moveSlots(handler, playerInvOffset, playerInvOffset + 4 * 9));
+        UnderWareExecutor.execute(() -> moveSlots(handler, playerInvOffset, playerInvOffset + 4 * 9));
     }
 
     public boolean showButtons() {

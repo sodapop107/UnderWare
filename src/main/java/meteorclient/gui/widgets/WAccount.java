@@ -6,7 +6,7 @@ import meteorclient.gui.widgets.pressable.WButton;
 import meteorclient.gui.widgets.pressable.WMinus;
 import meteorclient.systems.accounts.Account;
 import meteorclient.systems.accounts.Accounts;
-import meteorclient.utils.network.MeteorExecutor;
+import meteorclient.utils.network.UnderWareExecutor;
 import meteorclient.utils.render.color.Color;
 
 import static meteorclient.UnderWare.mc;
@@ -46,7 +46,7 @@ public abstract class WAccount extends WHorizontalList {
             login.set("...");
             screen.locked = true;
 
-            MeteorExecutor.execute(() -> {
+            UnderWareExecutor.execute(() -> {
                 if (account.login()) {
                     name.set(account.getUsername());
 
