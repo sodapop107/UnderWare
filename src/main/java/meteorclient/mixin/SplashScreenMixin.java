@@ -3,24 +3,20 @@ package meteorclient.mixin;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import meteorclient.UnderWare;
-import meteorclient.systems.config.SplashScreenConfig;
-import meteorclient.utils.texture.BlurredConfigTexture;
-import meteorclient.utils.texture.ConfigTexture;
-import meteorclient.utils.texture.EmptyTexture;
-
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.BackgroundHelper;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.resource.ResourceReload;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,223 +25,131 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static net.minecraft.client.gui.DrawableHelper.drawTexture;
-import static net.minecraft.client.gui.DrawableHelper.fill;
-
 @Mixin(SplashOverlay.class)
-public class SplashScreenMixin {
+public abstract class SplashScreenMixin {
+    @Mutable
+    @Shadow
+    @Final
+    static Identifier LOGO;
 
-    @Shadow @Final static Identifier LOGO;
-    @Shadow @Final private MinecraftClient client;
-    @Shadow @Final private boolean reloading;
-    @Shadow @Final private ResourceReload reload;
-    @Shadow private float progress;
-    @Shadow private long reloadCompleteTime;
-    @Shadow private long reloadStartTime;
-    @Shadow @Final private Consumer<Optional<Throwable>> exceptionHandler;
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
-    private static final SplashScreenConfig SS_CONFIG = UnderWare.SS_CONFIG;
+    @Shadow
+    @Final
+    private boolean reloading;
 
-    private static final Identifier EMPTY_TEXTURE = new Identifier("empty.png");
-    private static final Identifier MOJANG_TEXTURE = new Identifier(SS_CONFIG.textures.MojangLogo);
-    private static final Identifier ASPECT_1to1_TEXTURE = new Identifier(SS_CONFIG.textures.Aspect1to1Logo);
-    private static final Identifier BOSS_BAR_TEXTURE = new Identifier(SS_CONFIG.textures.BossBarTexture);
-    private static final Identifier CUSTOM_PROGRESS_BAR_TEXTURE = new Identifier(SS_CONFIG.textures.CBarTexture);
-    private static final Identifier CUSTOM_PROGRESS_BAR_BACKGROUND_TEXTURE = new Identifier(SS_CONFIG.textures.CBarBackgroundTexture);
-    private static final Identifier BACKGROUND_TEXTURE = new Identifier(SS_CONFIG.textures.BackgroundTexture);
+    @Shadow
+    @Final
+    private ResourceReload reload;
+
+    @Shadow
+    private float progress;
+
+    @Shadow
+    private long reloadCompleteTime;
+
+    @Shadow
+    private long reloadStartTime;
+
+    @Shadow
+    @Final
+    private Consumer<Optional<Throwable>> exceptionHandler;
+
+    private static final Identifier UNDERWARE_LOGO = new Identifier("under-ware", "textures/underware.png");
+
+    private static final int BACKGROUND_COLOR = ColorHelper.Argb.getArgb(255, 20, 24, 28);
 
     @Inject(method = "init(Lnet/minecraft/client/MinecraftClient;)V", at = @At("HEAD"), cancellable = true)
-    private static void init(MinecraftClient client, CallbackInfo ci) { // Load our custom textures at game start //
-        if (SS_CONFIG.logoStyle == SplashScreenConfig.LogoStyle.Mojang) {
-            client.getTextureManager().registerTexture(LOGO, new BlurredConfigTexture(MOJANG_TEXTURE));
-        }
-        else {
-            client.getTextureManager().registerTexture(LOGO, new EmptyTexture(EMPTY_TEXTURE));
-        }
-        client.getTextureManager().registerTexture(ASPECT_1to1_TEXTURE, new ConfigTexture(ASPECT_1to1_TEXTURE));
-        client.getTextureManager().registerTexture(BACKGROUND_TEXTURE, new ConfigTexture(BACKGROUND_TEXTURE));
-
-        client.getTextureManager().registerTexture(CUSTOM_PROGRESS_BAR_TEXTURE, new ConfigTexture(CUSTOM_PROGRESS_BAR_TEXTURE));
-        client.getTextureManager().registerTexture(CUSTOM_PROGRESS_BAR_BACKGROUND_TEXTURE, new ConfigTexture(CUSTOM_PROGRESS_BAR_BACKGROUND_TEXTURE));
-
-        ci.cancel();
+    private static void init(MinecraftClient client, CallbackInfo info) {
+        LOGO = new Identifier("under-ware", "textures/blank.png");
+        info.cancel();
     }
 
     @Inject(at = @At("TAIL"), method = "render")
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        int width = this.client.getWindow().getScaledWidth();
-        int height = this.client.getWindow().getScaledHeight();
-        long l = Util.getMeasuringTimeMs();
-        if (this.reloading && this.reloadStartTime == -1L) {
-            this.reloadStartTime = l;
-        }
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo info) {
+        int width = client.getWindow().getScaledWidth();
+        int height = client.getWindow().getScaledHeight();
 
-        float f = this.reloadCompleteTime > -1L ? (float)(l - this.reloadCompleteTime) / 1000.0F : -1.0F;
-        float g = this.reloadStartTime > -1L ? (float)(l - this.reloadStartTime) / 500.0F : -1.0F;
-        float s;
-        int m;
+        long time = Util.getMeasuringTimeMs();
 
-        // Render our custom color
-        if (f >= 1.0F) {
-            if (this.client.currentScreen != null) {
-                this.client.currentScreen.render(matrices, 0, 0, delta);
-            }
+        if (reloading && reloadStartTime == -1L) reloadStartTime = time;
 
-            m = MathHelper.ceil((1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F)) * 255.0F);
-            fill(matrices, 0, 0, width, height, withAlpha(m));
-            s = 1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F);
-        } else if (this.reloading) {
-            if (this.client.currentScreen != null && g < 1.0F) {
-                this.client.currentScreen.render(matrices, mouseX, mouseY, delta);
-            }
+        float completeTime = reloadCompleteTime > -1L ? (float)(time - reloadCompleteTime) / 1000.0F : -1.0F;
+        float startTime = reloadStartTime > -1L ? (float)(time - reloadStartTime) / 500.0F : -1.0F;
 
-            m = MathHelper.ceil(MathHelper.clamp(g, 0.15D, 1.0D) * 255.0D);
-            fill(matrices, 0, 0, width, height, withAlpha(m));
-            s = MathHelper.clamp(g, 0.0F, 1.0F);
+        int color;
+        float floatTime;
+        if (completeTime >= 1.0F) {
+            if (client.currentScreen != null) client.currentScreen.render(matrices, 0, 0, delta);
+
+            floatTime = 1.0F - MathHelper.clamp(completeTime - 1.0F, 0.0F, 1.0F);
+            color = MathHelper.ceil((1.0F - MathHelper.clamp(completeTime - 1.0F, 0.0F, 1.0F)) * 255.0F);
+            DrawableHelper.fill(matrices, 0, 0, width, height, withAlpha(BACKGROUND_COLOR, color));
+        } else if (reloading) {
+            if (client.currentScreen != null && startTime < 1.0F) client.currentScreen.render(matrices, mouseX, mouseY, delta);
+
+            floatTime = MathHelper.clamp(startTime, 0.0F, 1.0F);
+            color = MathHelper.ceil(MathHelper.clamp(startTime, 0.15D, 1.0D) * 255.0D);
+            DrawableHelper.fill(matrices, 0, 0, width, height, withAlpha(BACKGROUND_COLOR, color));
         } else {
-            m = getBackgroundColor();
-            float p = (float)(m >> 16 & 255) / 255.0F;
-            float q = (float)(m >> 8 & 255) / 255.0F;
-            float r = (float)(m & 255) / 255.0F;
-            GlStateManager._clearColor(p, q, r, 1.0F);
+            floatTime = 1.0F;
+            color = BACKGROUND_COLOR;
+            GlStateManager._clearColor((float) (color >> 16 & 255) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, 1.0F);
             GlStateManager._clear(16384, MinecraftClient.IS_SYSTEM_MAC);
-            s = 1.0F;
         }
 
-        m = (int)((double)this.client.getWindow().getScaledWidth() * 0.5D);
-        int u = (int)((double)this.client.getWindow().getScaledHeight() * 0.5D);
-        double d = Math.min((double)this.client.getWindow().getScaledWidth() * 0.75D, this.client.getWindow().getScaledHeight()) * 0.25D;
-        int v = (int)(d * 0.5D);
-        double e = d * 4.0D;
-        int w = (int)(e * 0.5D);
+        color = (int) ((double) client.getWindow().getScaledWidth() * 0.5D);
+        double res = Math.min((double) client.getWindow().getScaledWidth() * 0.75D, client.getWindow().getScaledHeight()) * 0.25D;
+        int resCalculated = (int) ((res * 4.0D) * 0.5D);
 
-        // Render our custom background image
-        if (SS_CONFIG.backgroundImage) {
-            RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-            RenderSystem.enableBlend();
-            RenderSystem.blendEquation(32774);
-            RenderSystem.blendFunc(770, 1);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, s);
-            drawTexture(matrices, 0, 0, 0, 0, 0, width, height, width, height);
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.disableBlend();
-        }
-
-        // Render the Logo
-        RenderSystem.setShaderTexture(0, UnderWare.SS_CONFIG.logoStyle == SplashScreenConfig.LogoStyle.Aspect1to1 ? ASPECT_1to1_TEXTURE : LOGO);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableBlend();
+        RenderSystem.setShaderTexture(0, UNDERWARE_LOGO);
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
-        if (UnderWare.SS_CONFIG.logoStyle == SplashScreenConfig.LogoStyle.Aspect1to1) {
-            RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, s);
-            drawTexture(matrices, m - (w / 2), v, w, w, 0, 0, 512, 512, 512, 512);
-        } else if (UnderWare.SS_CONFIG.logoStyle == SplashScreenConfig.LogoStyle.Mojang) {
-            RenderSystem.blendFunc(770, 1);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, s);
-            drawTexture(matrices, m - w, u - v, w, (int)d, -0.0625F, 0.0F, 120, 60, 120, 120);
-            drawTexture(matrices, m, u - v, w, (int)d, 0.0625F, 60.0F, 120, 60, 120, 120);
-        }
+        RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, floatTime);
+        DrawableHelper.drawTexture(matrices, color - (resCalculated / 2), (int) (res * 0.5D), resCalculated, resCalculated, 0, 0, 512, 512, 512, 512);
 
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
 
-        int x = (int)((double)this.client.getWindow().getScaledHeight() * 0.8325D);
-        float y = this.reload.getProgress();
-        this.progress = MathHelper.clamp(this.progress * 0.95F + y * 0.050000012F, 0.0F, 1.0F);
-        if (f < 1.0F) {
-            this.renderProgressBar(matrices, width / 2 - w, x - 5, width / 2 + w, x + 5, 1.0F - MathHelper.clamp(f, 0.0F, 1.0F), null);
-        }
+        int r = (int) ((double) client.getWindow().getScaledHeight() * 0.8325D);
 
-        if (f >= 2.0F) {
-            this.client.setOverlay(null);
-        }
+        progress = MathHelper.clamp(progress * 0.95F + reload.getProgress() * 0.050000012F, 0.0F, 1.0F);
 
-        if (this.reloadCompleteTime == -1L && this.reload.isComplete() && (!this.reloading || g >= 2.0F)) {
+        if (completeTime < 1.0F) renderProgressBar(matrices, width / 2 - resCalculated, r - 5, width / 2 + resCalculated, r + 5, 1.0F - MathHelper.clamp(completeTime, 0.0F, 1.0F), null);
+
+        if (completeTime >= 2.0F) client.setOverlay(null);
+
+        if (reloadCompleteTime == -1L && reload.isComplete() && (!reloading || startTime >= 2.0F)) {
             try {
-                this.reload.throwException();
-                this.exceptionHandler.accept(Optional.empty());
-            } catch (Throwable var23) {
-                this.exceptionHandler.accept(Optional.of(var23));
+                reload.throwException();
+                exceptionHandler.accept(Optional.empty());
+            } catch (Throwable throwable) {
+                exceptionHandler.accept(Optional.of(throwable));
             }
 
-            this.reloadCompleteTime = Util.getMeasuringTimeMs();
-            if (this.client.currentScreen != null) {
-                this.client.currentScreen.init(this.client, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight());
-            }
+            reloadCompleteTime = Util.getMeasuringTimeMs();
+            if (client.currentScreen != null) client.currentScreen.init(client, width, height);
         }
     }
 
-    private static int getBackgroundColor() {
-        if (SS_CONFIG.backgroundImage) {
-            return BackgroundHelper.ColorMixer.getArgb(0, 0, 0, 0);
-        }
-        else {
-            return UnderWare.SS_CONFIG.backgroundColor;
-        }
+    @Inject(method = "renderProgressBar", at = @At("TAIL"))
+    private void renderProgressBar(MatrixStack matrices, int x1, int y1, int x2, int y2, float opacity, CallbackInfo info) {
+        int progress = MathHelper.ceil((float) (x2 - x1 - 2) * this.progress);
+        int color = ColorHelper.Argb.getArgb(Math.round(opacity * 255.0F), 128, 0, 255);
+
+        DrawableHelper.fill(matrices, x1 + 2, y1 + 2, x1 + progress, y2 - 2, color);
+        DrawableHelper.fill(matrices, x1 + 1, y1, x2 - 1, y1 + 1, color);
+        DrawableHelper.fill(matrices, x1 + 1, y2, x2 - 1, y2 - 1, color);
+        DrawableHelper.fill(matrices, x1, y1, x1 + 1, y2, color);
+        DrawableHelper.fill(matrices, x2, y1, x2 - 1, y2, color);
     }
 
-    private static int withAlpha(int alpha) {
-        return getBackgroundColor() | alpha << 24;
+    private static int withAlpha(int color, int alpha) {
+        return color | alpha << 24;
     }
-
-    @Inject(at = @At("TAIL"), method = "renderProgressBar")
-    private void renderProgressBar(MatrixStack matrices, int x1, int y1, int x2, int y2, float opacity, CallbackInfo ci) {
-        int i = MathHelper.ceil((float)(x2 - x1 - 2) * this.progress);
-
-        // Bossbar Progress Bar
-        if (UnderWare.SS_CONFIG.progressBarType == SplashScreenConfig.ProgressBarType.BossBar) {
-            RenderSystem.setShaderTexture(0, BOSS_BAR_TEXTURE);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
-            int overlay = 0;
-
-            if (UnderWare.SS_CONFIG.bossBarType == SplashScreenConfig.BossBarType.NOTCHED_6) {overlay = 93;}
-            else if (UnderWare.SS_CONFIG.bossBarType == SplashScreenConfig.BossBarType.NOTCHED_10) {overlay = 105;}
-            else if (UnderWare.SS_CONFIG.bossBarType == SplashScreenConfig.BossBarType.NOTCHED_12) {overlay = 117;}
-            else if (UnderWare.SS_CONFIG.bossBarType == SplashScreenConfig.BossBarType.NOTCHED_20) {overlay = 129;}
-
-            int bbWidth = (int) ((x2 - x1+1) * 1.4f);
-            int bbHeight = (y2 - y1) * 30;
-            drawTexture(matrices, x1, y1 + 1, 0, 0, 0, x2 - x1, (int) ((y2-y1) / 1.4f), bbWidth, bbHeight);
-            drawTexture(matrices, x1, y1 + 1, 0, 0, 5f, i, (int) ((y2 - y1) / 1.4f), bbWidth, bbHeight);
-
-            RenderSystem.enableBlend();
-            RenderSystem.blendEquation(32774);
-            RenderSystem.blendFunc(770, 1);
-            if (overlay != 0) {
-                drawTexture(matrices, x1, y1 + 1, 0, 0, overlay, x2 - x1, (int) ((y2 - y1) / 1.4f), bbWidth, bbHeight);
-            }
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.disableBlend();
-        }
-
-        // Custom Progress Bar
-        if (UnderWare.SS_CONFIG.progressBarType == SplashScreenConfig.ProgressBarType.Custom) {
-            int customWidth = UnderWare.SS_CONFIG.CProgressBarMode == SplashScreenConfig.ProgressBarMode.Linear ? x2 - x1 : i;
-            if (SS_CONFIG.CProgressBarBackground) {
-                RenderSystem.setShaderTexture(0, CUSTOM_PROGRESS_BAR_BACKGROUND_TEXTURE);
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
-                drawTexture(matrices, x1, y1, 0, 0, 6, x2 - x1, y2 - y1, 10, x2-x1);
-            }
-            RenderSystem.setShaderTexture(0, CUSTOM_PROGRESS_BAR_TEXTURE);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            drawTexture(matrices, x1, y1, 0, 0, 6, i, y2 - y1, customWidth, 10);
-        }
-
-        // Vanilla / With Color progress bar
-        if (UnderWare.SS_CONFIG.progressBarType == SplashScreenConfig.ProgressBarType.Vanilla) {
-            int j = Math.round(opacity * 255.0F);
-            int k = UnderWare.SS_CONFIG.progressBarColor | 255 << 24;
-            int kk = UnderWare.SS_CONFIG.progressFrameColor | 255 << 24;
-            fill(matrices, x1 + 2, y1 + 2, x1 + i, y2 - 2, k);
-            fill(matrices, x1 + 1, y1, x2 - 1, y1 + 1, kk);
-            fill(matrices, x1 + 1, y2, x2 - 1, y2 - 1, kk);
-            fill(matrices, x1, y1, x1 + 1, y2, kk);
-            fill(matrices, x2, y1, x2 - 1, y2, kk);
-        }
-
-    }
-
 }

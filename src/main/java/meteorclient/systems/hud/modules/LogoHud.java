@@ -23,7 +23,7 @@ public class LogoHud extends HudElement {
         .build()
     );
 
-    private final Identifier TEXTURE = new Identifier("under-ware", "textures/meteor.png");
+    private final Identifier TEXTURE = new Identifier("under-ware", "textures/underware.png");
 
     public LogoHud(HUD hud) {
         super(hud, "logo", "Shows the Meteor logo in the HUD.");
