@@ -22,6 +22,7 @@ import meteorclient.utils.misc.ISerializable;
 import meteorclient.utils.misc.Keybind;
 import meteorclient.utils.misc.Names;
 import meteorclient.utils.render.color.Color;
+
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;

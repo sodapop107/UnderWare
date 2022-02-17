@@ -3,13 +3,17 @@ package meteorclient.systems.commands.commands;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
+
 import joptsimple.internal.Strings;
+
 import meteorclient.UnderWare;
 import meteorclient.events.packets.PacketEvent;
 import meteorclient.events.world.TickEvent;
 import meteorclient.systems.commands.Command;
 import meteorclient.utils.world.TickRate;
+
 import meteordevelopment.orbit.EventHandler;
+
 import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
@@ -134,7 +138,7 @@ public class ServerCommand extends Command {
         }
         info(
             new LiteralText(String.format("%sIP: ", Formatting.GRAY))
-            .append(ipText)
+                .append(ipText)
         );
 
         info("Port: %d", ServerAddress.parse(server.address).getPort());

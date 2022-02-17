@@ -1,22 +1,27 @@
 package meteorclient.systems.commands.commands;
 
+import meteorclient.systems.commands.arguments.EnumArgumentType;
+
 import baritone.api.BaritoneAPI;
+
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+
 import meteorclient.UnderWare;
 import meteorclient.events.packets.PacketEvent;
 import meteorclient.systems.commands.Command;
+import meteorclient.utils.Utils;
 import meteorclient.utils.player.ChatUtils;
 import meteorclient.utils.player.FindItemResult;
 import meteorclient.utils.player.InvUtils;
+import meteorclient.utils.world.WorldGenUtils;
+
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.sound.SoundEvents;
@@ -25,33 +30,24 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class LocateCommand extends Command {
+
+    private final static DynamicCommandExceptionType NOT_FOUND = new DynamicCommandExceptionType(o -> {
+        if (o instanceof WorldGenUtils.Feature) {
+            return new LiteralText(String.format(
+                "%s not found.",
+                Utils.nameToTitle(o.toString().replaceAll("_", "-")))
+            );
+        }
+        return new LiteralText("Not found.");
+    });
 
     private Vec3d firstStart;
     private Vec3d firstEnd;
     private Vec3d secondStart;
     private Vec3d secondEnd;
-
-    private final List<Block> netherFortressBlocks = Arrays.asList(
-            Blocks.NETHER_BRICKS,
-            Blocks.NETHER_BRICK_FENCE,
-            Blocks.NETHER_WART
-    );
-
-    private final List<Block> monumentBlocks = Arrays.asList(
-            Blocks.PRISMARINE_BRICKS,
-            Blocks.SEA_LANTERN,
-            Blocks.DARK_PRISMARINE
-    );
-
-    private  final List<Block> strongholdBlocks = Arrays.asList(
-            Blocks.END_PORTAL_FRAME
-    );
 
     public LocateCommand() {
         super("locate", "Locates structures", "loc");
@@ -59,34 +55,7 @@ public class LocateCommand extends Command {
 
     @Override
     public void build(LiteralArgumentBuilder<CommandSource> builder) {
-        builder.then(literal("buried_treasure").executes(s -> {
-            ItemStack stack = mc.player.getInventory().getMainHandStack();
-            if (stack.getItem() != Items.FILLED_MAP) {
-                error("You need to hold a treasure map first");
-                return SINGLE_SUCCESS;
-            }
-            NbtCompound tag = stack.getNbt();
-            NbtList nbt1 = (NbtList) tag.get("Decorations");
-            if (nbt1 == null) {
-                error("Couldn't locate the cross. Are you holding a (highlight)treasure map(default)?");
-                return SINGLE_SUCCESS;
-            }
-
-            NbtCompound iconNBT = nbt1.getCompound(0);
-            if (iconNBT == null) {
-                error("Couldn't locate the cross. Are you holding a (highlight)treasure map(default)?");
-                return SINGLE_SUCCESS;
-            }
-
-            Vec3d coords = new Vec3d(iconNBT.getDouble("x"),iconNBT.getDouble("y"),iconNBT.getDouble("z"));
-            BaseText text = new LiteralText("Buried Treasure located at ");
-            text.append(ChatUtils.formatCoords(coords));
-            text.append(".");
-            info(text);
-            return SINGLE_SUCCESS;
-        }));
-
-        builder.then(literal("lodestone").executes(s -> {
+        builder.then(literal("lodestone").executes(ctx -> {
             ItemStack stack = mc.player.getInventory().getMainHandStack();
             if (stack.getItem() != Items.COMPASS) {
                 error("You need to hold a lodestone compass");
@@ -111,100 +80,33 @@ public class LocateCommand extends Command {
             return SINGLE_SUCCESS;
         }));
 
-        builder.then(literal("mansion").executes(s -> {
-            ItemStack stack = mc.player.getInventory().getMainHandStack();
-            if (stack.getItem() != Items.FILLED_MAP) {
-                error("You need to hold a woodland explorer map first");
-                return SINGLE_SUCCESS;
-            }
-            NbtCompound tag = stack.getNbt();
-            NbtList nbt1 = (NbtList) tag.get("Decorations");
-            if (nbt1 == null) {
-                error("Couldn't locate the mansion. Are you holding a (highlight)woodland explorer map(default)?");
-                return SINGLE_SUCCESS;
-            }
-
-            NbtCompound iconNBT = nbt1.getCompound(0);
-            if (iconNBT == null) {
-                error("Couldn't locate the mansion. Are you holding a (highlight)woodland explorer map(default)?");
-                return SINGLE_SUCCESS;
-            }
-
-            Vec3d coords = new Vec3d(iconNBT.getDouble("x"),iconNBT.getDouble("y"),iconNBT.getDouble("z"));
-            BaseText text = new LiteralText("Mansion located at ");
-            text.append(ChatUtils.formatCoords(coords));
-            text.append(".");
-            info(text);
-            return SINGLE_SUCCESS;
-        }));
-
-        builder.then(literal("stronghold").executes(s -> {
-            FindItemResult eye = InvUtils.findInHotbar(Items.ENDER_EYE);
-
-            if (eye.found()) {
-                BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("follow entity minecraft:eye_of_ender");
-                firstStart = null;
-                firstEnd = null;
-                secondStart = null;
-                secondEnd = null;
-                UnderWare.EVENT_BUS.subscribe(this);
-                info("Please throw the first Eye of Ender");
-            } else {
-                Vec3d coords = findByBlockList(strongholdBlocks);
-                if (coords == null) {
-                    error("No stronghold found nearby. You can use (highlight)Ender Eyes(default) for more success.");
-                    return SINGLE_SUCCESS;
-                }
-                BaseText text = new LiteralText("Stronghold located at ");
+        builder.then(argument("feature", EnumArgumentType.enumArgument(WorldGenUtils.Feature.stronghold)).executes(ctx -> {
+            WorldGenUtils.Feature feature = EnumArgumentType.getEnum(ctx, "feature", WorldGenUtils.Feature.stronghold);
+            BlockPos pos = WorldGenUtils.locateFeature(feature, mc.player.getBlockPos());
+            if (pos != null) {
+                BaseText text = new LiteralText(String.format(
+                    "%s located at ",
+                    Utils.nameToTitle(feature.toString().replaceAll("_", "-"))
+                ));
+                Vec3d coords = new Vec3d(pos.getX(), pos.getY(), pos.getZ());
                 text.append(ChatUtils.formatCoords(coords));
                 text.append(".");
                 info(text);
-            }
-            return SINGLE_SUCCESS;
-        }));
-
-        builder.then(literal("nether_fortress").executes(s -> {
-            Vec3d coords = findByBlockList(netherFortressBlocks);
-            if (coords == null ) {
-                error("No nether fortress found.");
                 return SINGLE_SUCCESS;
             }
-            BaseText text = new LiteralText("Fortress located at ");
-            text.append(ChatUtils.formatCoords(coords));
-            text.append(".");
-            info(text);
-            return SINGLE_SUCCESS;
-        }));
-
-        builder.then(literal("monument").executes(s -> {
-            ItemStack stack = mc.player.getInventory().getMainHandStack();
-            if (stack.getItem() == Items.FILLED_MAP) {
-                NbtCompound tag = stack.getNbt();
-                if (tag != null) {
-                    NbtList nbt1 = (NbtList) tag.get("Decorations");
-                    if (nbt1 != null) {
-                        NbtCompound iconNBT = nbt1.getCompound(0);
-                        if (iconNBT != null) {
-                            Vec3d coords = new Vec3d(iconNBT.getDouble("x"),iconNBT.getDouble("y"),iconNBT.getDouble("z"));
-                            BaseText text = new LiteralText("Monument located at ");
-                            text.append(ChatUtils.formatCoords(coords));
-                            text.append(".");
-                            info(text);
-                            return SINGLE_SUCCESS;
-                        }
-                    }
+            if (feature == WorldGenUtils.Feature.stronghold) {
+                FindItemResult eye = InvUtils.findInHotbar(Items.ENDER_EYE);
+                if (eye.found()) {
+                    BaritoneAPI.getProvider().getPrimaryBaritone().getCommandManager().execute("follow entity minecraft:eye_of_ender");
+                    firstStart = null;
+                    firstEnd = null;
+                    secondStart = null;
+                    secondEnd = null;
+                    UnderWare.EVENT_BUS.subscribe(this);
+                    info("Please throw the first Eye of Ender");
                 }
             }
-            Vec3d coords = findByBlockList(monumentBlocks);
-            if (coords == null ) {
-                error("No monument found. You can try using a (highlight)Ocean explorer map(default) for more success.");
-                return SINGLE_SUCCESS;
-            }
-            BaseText text = new LiteralText("Monument located at ");
-            text.append(ChatUtils.formatCoords(coords));
-            text.append(".");
-            info(text);
-            return SINGLE_SUCCESS;
+            throw NOT_FOUND.create(feature);
         }));
 
         builder.then(literal("cancel").executes(s -> {
@@ -216,18 +118,6 @@ public class LocateCommand extends Command {
     private void cancel() {
         warning("Locate canceled");
         UnderWare.EVENT_BUS.unsubscribe(this);
-    }
-
-    private Vec3d findByBlockList(List<Block> blockList) {
-        List<BlockPos> posList = BaritoneAPI.getProvider().getWorldScanner().scanChunkRadius(BaritoneAPI.getProvider().getPrimaryBaritone().getPlayerContext(),
-                blockList,64,10,32);
-        if (posList.isEmpty()) {
-            return null;
-        }
-        if (posList.size() < 3) {
-            warning("Only %d block(s) found. This search might be a false positive.", posList.size());
-        }
-        return new Vec3d(posList.get(0).getX(),posList.get(0).getY(),posList.get(0).getZ());
     }
 
     @EventHandler

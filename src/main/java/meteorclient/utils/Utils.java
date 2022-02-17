@@ -43,6 +43,7 @@ import net.minecraft.world.chunk.Chunk;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.jetbrains.annotations.Range;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -485,5 +486,12 @@ public class Utils {
         for (T item : checked)
             map.put(item, true);
         return new Object2BooleanOpenHashMap<>(map);
+    }
+    public static Color lerp(Color first, Color second, @Range(from = 0, to = 1) float v) {
+        return new Color(
+            (int) (first.r * (1 - v) + second.r * v),
+            (int) (first.g * (1 - v) + second.g * v),
+            (int) (first.b * (1 - v) + second.b * v)
+        );
     }
 }

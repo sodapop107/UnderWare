@@ -75,6 +75,10 @@ dependencies {
     // Flatlaf
     implementation "com.formdev:flatlaf:${project.flatlaf_version}"
 
+    //Seeds .locate feature
+    modImplementation 'com.github.hube12:SEED:master-SNAPSHOT'
+    include 'com.github.hube12:SEED:master-SNAPSHOT'
+
     // Music
     library "com.github.Walkyst:lavaplayer:${project.lavaplayer_version}"
     library "com.sedmelluq:lava-common:${project.lava_common_version}"

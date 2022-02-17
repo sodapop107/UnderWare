@@ -67,6 +67,8 @@ public class Commands extends System<Commands> {
         add(new MusicCommand());
         add(new SoftLeaveCommand());
         add(new SetArmorCommand());
+        add(new PanicCommand());
+        add(new ServerPortCommand());
 
         commands.sort(Comparator.comparing(Command::getName));
     }

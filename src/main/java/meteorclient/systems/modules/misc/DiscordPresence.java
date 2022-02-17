@@ -2,7 +2,6 @@ package meteorclient.systems.modules.misc;
 
 //Created by squidoodly
 
-
 import meteorclient.UnderWare;
 import meteorclient.events.game.OpenScreenEvent;
 import meteorclient.events.world.TickEvent;

@@ -18,8 +18,8 @@ import java.util.stream.Stream;
 import static meteorclient.UnderWare.mc;
 
 public class Capes {
-    private static final String CAPE_OWNERS_URL = "https://raw.githubusercontent.com/Vbuuu/UnderWareResources/main/Cape/capeowners.html";
-    private static final String CAPES_URL = "https://raw.githubusercontent.com/Vbuuu/UnderWareResources/main/Cape/capes.html";
+    private static final String CAPE_OWNERS_URL = "https://raw.githubusercontent.com/Vbuuu/UnderWareResources/main/Cape/capeowners";
+    private static final String CAPES_URL = "https://raw.githubusercontent.com/Vbuuu/UnderWareResources/main/Cape/capes";
 
     private static final Map<UUID, String> OWNERS = new HashMap<>();
     private static final Map<String, String> URLS = new HashMap<>();
@@ -123,7 +123,6 @@ public class Capes {
         public void download() {
             if (downloaded || downloading || retryTimer > 0) return;
             downloading = true;
-
             UnderWareExecutor.execute(() -> {
                 try {
                     String url = URLS.get(name);
