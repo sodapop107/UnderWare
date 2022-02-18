@@ -505,6 +505,10 @@ public class Modules extends System<Modules> {
         add(new PopChams());
         add(new RideStats());
         add(new Confetti());
+        add(new Rendering());
+        add(new ColorSigns());
+        add(new SkeletonESP());
+        add(new SoundLocator());
     }
 
     private void initWorld() {
@@ -610,6 +614,7 @@ public class Modules extends System<Modules> {
         add(new BurrowAlert());
         add(new PopCounter());
         add(new GroupMessage());
+        add(new ChatBot());
     }
 
     public static class ModuleRegistry extends Registry<Module> {

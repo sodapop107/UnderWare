@@ -1,5 +1,6 @@
 package meteorclient.utils.player;
 
+import meteorclient.UnderWare;
 import meteorclient.addons.AddonManager;
 import meteorclient.addons.MeteorAddon;
 import meteorclient.utils.render.color.Color;
@@ -22,7 +23,7 @@ public class TitleScreenCreditsRenderer {
         for (MeteorAddon addon : AddonManager.ADDONS) add(addon);
 
         // Sort by width (Meteor always first)
-        credits.sort(Comparator.comparingInt(value -> value.sections.get(0).text.equals("UnderWare ") ? Integer.MIN_VALUE : -value.width));
+        credits.sort(Comparator.comparingInt(value -> value.sections.get(0).text.equals("UnderWare " + UnderWare.VERSION + " ") ? Integer.MIN_VALUE : -value.width));
     }
 
     private static void add(MeteorAddon addon) {

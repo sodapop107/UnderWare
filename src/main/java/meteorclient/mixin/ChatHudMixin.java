@@ -34,9 +34,9 @@ import java.util.regex.Pattern;
 public abstract class ChatHudMixin implements IChatHud {
     private static final MinecraftClient mc = MinecraftClient.getInstance();
 
-    private static final Pattern METEOR_PREFIX_REGEX = Pattern.compile("^\\s{0,2}(<[0-9]{1,2}:[0-9]{1,2}>\\s)?\\[Meteor\\]");
+    private static final Pattern UNDERWARE_PREFIX_REGEX = Pattern.compile("^\\s{0,2}(<[0-9]{1,2}:[0-9]{1,2}>\\s)?\\[UnderWare\\]");
     private static final Pattern BARITONE_PREFIX_REGEX = Pattern.compile("^\\s{0,2}(<[0-9]{1,2}:[0-9]{1,2}>\\s)?\\[Baritone\\]");
-    private static final Identifier METEOR_CHAT_ICON = new Identifier("under-ware", "textures/icons/chat/underware.png");
+    private static final Identifier UNDERWARE_CHAT_ICON = new Identifier("under-ware", "textures/icons/chat/underware.png");
     private static final Identifier BARITONE_CHAT_ICON = new Identifier("under-ware", "textures/icons/chat/baritone.png");
 
     @Shadow @Final private List<ChatHudLine<OrderedText>> visibleMessages;
@@ -119,8 +119,8 @@ public abstract class ChatHudMixin implements IChatHud {
     protected abstract void addMessage(Text message, int messageId);
 
     private void drawIcon(MatrixStack matrices, String line, int y, float opacity) {
-        if (METEOR_PREFIX_REGEX.matcher(line).find()) {
-            RenderSystem.setShaderTexture(0, METEOR_CHAT_ICON);
+        if (UNDERWARE_PREFIX_REGEX.matcher(line).find()) {
+            RenderSystem.setShaderTexture(0, UNDERWARE_CHAT_ICON);
             matrices.push();
             RenderSystem.setShaderColor(1, 1, 1, opacity);
             matrices.translate(0, y, 0);
