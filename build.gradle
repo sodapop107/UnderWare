@@ -47,6 +47,7 @@ repositories {
         name = "vram"
         url = "https://maven.vram.io//"
     }
+    mavenCentral()
 }
 
 dependencies {

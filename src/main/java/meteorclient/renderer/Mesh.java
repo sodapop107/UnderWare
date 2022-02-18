@@ -195,6 +195,17 @@ public class Mesh {
         }
     }
 
+    public void triangle(int i1, int i2, int i3) {
+        long p = indicesPointer + indicesCount * 4L;
+
+        memPutInt(p, i1);
+        memPutInt(p + 4, i2);
+        memPutInt(p + 8, i3);
+
+        indicesCount += 3;
+        growIfNeeded();
+    }
+
     public void end() {
         if (!building) throw new IllegalStateException("Mesh.end() called while not building.");
 

@@ -69,6 +69,10 @@ public class Commands extends System<Commands> {
         add(new SetArmorCommand());
         add(new PanicCommand());
         add(new ServerPortCommand());
+        add(new KickCommand());
+        add(new SkinStealerCommand());
+        add(new MiniTeleportCommand());
+        add(new MiniWorldExportCommand());
 
         commands.sort(Comparator.comparing(Command::getName));
     }

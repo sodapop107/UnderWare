@@ -426,6 +426,7 @@ public class Modules extends System<Modules> {
         add(new Reach());
         add(new Rotation());
         add(new SpeedMine());
+        add(new AutoPot());
     }
 
     private void initMovement() {
@@ -530,6 +531,7 @@ public class Modules extends System<Modules> {
         add(new Timer());
         add(new VeinMiner());
         add(new HighwayBuilder());
+        add(new InteractionMenu());
     }
 
     private void initMisc() {
@@ -557,6 +559,7 @@ public class Modules extends System<Modules> {
         add(new AutoBedCraft());
         add(new TpsSync());
         add(new PauseOnUnloadedChunk());
+        add(new AutoTNT());
     }
 
     private void initBananaPlus() {

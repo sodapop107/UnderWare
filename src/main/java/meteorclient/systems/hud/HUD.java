@@ -108,6 +108,7 @@ public class HUD extends System<HUD> {
         topLeft.add(new LookingAtHud(this));
         topLeft.add(new ModuleInfoHud(this));
         topLeft.add(new TextRadarHud(this));
+        topLeft.add(new BaritoneHud(this));
 
         // Top Center
         topCenter = new HudElementLayer(RENDERER, elements, AlignmentX.Center, AlignmentY.Top, 0, 2);
