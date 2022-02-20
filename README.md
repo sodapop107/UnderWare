@@ -3,7 +3,7 @@
 <img src="https://raw.githubusercontent.com/Vbuuu/UnderWareResources/main/UnderWare.png" alt="under-ware-logo" width="40%"/>
 </p>
 
-<h1 align="center">Under Ware</h1>
+<h1 align="center">meteor tweaks by declipsonator</h1>
 
 <p align="center">A Minecraft Fabric Utility Mod for the latest Minecraft release.</p>
 
